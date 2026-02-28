@@ -21,7 +21,7 @@ const Dropdown = ({ options, value, onChange, placeholder = "Select an item..." 
 
     const filteredOptions = options.filter(opt =>
         opt.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ).slice(0, 100); // Limit to 100 rendered items to prevent DOM freezing
 
     return (
         <div className="dropdown-container" ref={dropdownRef}>
@@ -31,7 +31,7 @@ const Dropdown = ({ options, value, onChange, placeholder = "Select an item..." 
             >
                 {selectedOption ? (
                     <div className="dropdown-selected">
-                        {selectedOption.image && <img src={selectedOption.image} alt={selectedOption.name} className="dropdown-image" />}
+                        {selectedOption.image && <img src={selectedOption.image} alt={selectedOption.name} className="dropdown-image" onError={(e) => { e.target.style.display = 'none'; }} />}
                         <span>{selectedOption.name}</span>
                     </div>
                 ) : (
@@ -65,7 +65,7 @@ const Dropdown = ({ options, value, onChange, placeholder = "Select an item..." 
                                         setSearchTerm('');
                                     }}
                                 >
-                                    {option.image && <img src={option.image} alt={option.name} className="dropdown-image" />}
+                                    {option.image && <img src={option.image} alt={option.name} className="dropdown-image" onError={(e) => { e.target.style.display = 'none'; }} />}
                                     <span>{option.name}</span>
                                 </div>
                             ))
