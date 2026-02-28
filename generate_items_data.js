@@ -54,10 +54,13 @@ async function generate() {
                 continue;
             }
 
+            const localImagePath = path.join(process.cwd(), 'public', 'images', 'items', `${raw.name}.png`);
+            const useLocal = fs.existsSync(localImagePath);
+
             formattedItems.push({
                 id: raw.name,
                 name: raw.displayName,
-                image: `https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/${raw.name}.png`
+                image: useLocal ? `/images/items/${raw.name}.png` : `https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/${raw.name}.png`
             });
         }
 

@@ -72,7 +72,7 @@
   {
     "id": "dirt",
     "name": "Dirt",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/dirt.png"
+    "image": "/images/items/dirt.png"
   },
   {
     "id": "coarse_dirt",
@@ -107,12 +107,12 @@
   {
     "id": "cobblestone",
     "name": "Cobblestone",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/cobblestone.png"
+    "image": "/images/items/cobblestone.png"
   },
   {
     "id": "oak_planks",
     "name": "Oak Planks",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/oak_planks.png"
+    "image": "/images/items/oak_planks.png"
   },
   {
     "id": "spruce_planks",
@@ -827,7 +827,7 @@
   {
     "id": "glass",
     "name": "Glass",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/glass.png"
+    "image": "/images/items/glass.png"
   },
   {
     "id": "tinted_glass",
@@ -1382,7 +1382,7 @@
   {
     "id": "chest",
     "name": "Chest",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/chest.png"
+    "image": "/images/items/chest.png"
   },
   {
     "id": "crafting_table",
@@ -3172,12 +3172,12 @@
   {
     "id": "redstone",
     "name": "Redstone Dust",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/redstone.png"
+    "image": "/images/items/redstone.png"
   },
   {
     "id": "redstone_torch",
     "name": "Redstone Torch",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/redstone_torch.png"
+    "image": "/images/items/redstone_torch.png"
   },
   {
     "id": "redstone_block",
@@ -3187,52 +3187,52 @@
   {
     "id": "repeater",
     "name": "Redstone Repeater",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/repeater.png"
+    "image": "/images/items/repeater.png"
   },
   {
     "id": "comparator",
     "name": "Redstone Comparator",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/comparator.png"
+    "image": "/images/items/comparator.png"
   },
   {
     "id": "piston",
     "name": "Piston",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/piston.png"
+    "image": "/images/items/piston.png"
   },
   {
     "id": "sticky_piston",
     "name": "Sticky Piston",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/sticky_piston.png"
+    "image": "/images/items/sticky_piston.png"
   },
   {
     "id": "slime_block",
     "name": "Slime Block",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/slime_block.png"
+    "image": "/images/items/slime_block.png"
   },
   {
     "id": "honey_block",
     "name": "Honey Block",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/honey_block.png"
+    "image": "/images/items/honey_block.png"
   },
   {
     "id": "observer",
     "name": "Observer",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/observer.png"
+    "image": "/images/items/observer.png"
   },
   {
     "id": "hopper",
     "name": "Hopper",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/hopper.png"
+    "image": "/images/items/hopper.png"
   },
   {
     "id": "dispenser",
     "name": "Dispenser",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/dispenser.png"
+    "image": "/images/items/dispenser.png"
   },
   {
     "id": "dropper",
     "name": "Dropper",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/dropper.png"
+    "image": "/images/items/dropper.png"
   },
   {
     "id": "lectern",
@@ -3242,7 +3242,7 @@
   {
     "id": "target",
     "name": "Target",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/target.png"
+    "image": "/images/items/target.png"
   },
   {
     "id": "lever",
@@ -4342,12 +4342,12 @@
   {
     "id": "water_bucket",
     "name": "Water Bucket",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/water_bucket.png"
+    "image": "/images/items/water_bucket.png"
   },
   {
     "id": "lava_bucket",
     "name": "Lava Bucket",
-    "image": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/lava_bucket.png"
+    "image": "/images/items/lava_bucket.png"
   },
   {
     "id": "powder_snow_bucket",
