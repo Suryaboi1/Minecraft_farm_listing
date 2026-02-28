@@ -1,0 +1,102 @@
+[
+  {
+    "id": "oak_planks",
+    "name": "Oak Planks",
+    "image": "/images/items/oak_planks.png"
+  },
+  {
+    "id": "cobblestone",
+    "name": "Cobblestone",
+    "image": "/images/items/cobblestone.png"
+  },
+  {
+    "id": "glass",
+    "name": "Glass",
+    "image": "/images/items/glass.png"
+  },
+  {
+    "id": "piston",
+    "name": "Piston",
+    "image": "/images/items/piston.png"
+  },
+  {
+    "id": "sticky_piston",
+    "name": "Sticky Piston",
+    "image": "/images/items/sticky_piston.png"
+  },
+  {
+    "id": "observer",
+    "name": "Observer",
+    "image": "/images/items/observer.png"
+  },
+  {
+    "id": "redstone_dust",
+    "name": "Redstone Dust",
+    "image": "/images/items/redstone.png"
+  },
+  {
+    "id": "repeater",
+    "name": "Redstone Repeater",
+    "image": "/images/items/repeater.png"
+  },
+  {
+    "id": "comparator",
+    "name": "Redstone Comparator",
+    "image": "/images/items/comparator.png"
+  },
+  {
+    "id": "hopper",
+    "name": "Hopper",
+    "image": "/images/items/hopper.png"
+  },
+  {
+    "id": "chest",
+    "name": "Chest",
+    "image": "/images/items/chest.png"
+  },
+  {
+    "id": "water_bucket",
+    "name": "Water Bucket",
+    "image": "/images/items/water_bucket.png"
+  },
+  {
+    "id": "lava_bucket",
+    "name": "Lava Bucket",
+    "image": "/images/items/lava_bucket.png"
+  },
+  {
+    "id": "dirt",
+    "name": "Dirt",
+    "image": "/images/items/dirt.png"
+  },
+  {
+    "id": "slime_block",
+    "name": "Slime Block",
+    "image": "/images/items/slime_block.png"
+  },
+  {
+    "id": "honey_block",
+    "name": "Honey Block",
+    "image": "/images/items/honey_block.png"
+  },
+  {
+    "id": "dispenser",
+    "name": "Dispenser",
+    "image": "/images/items/dispenser.png"
+  },
+  {
+    "id": "dropper",
+    "name": "Dropper",
+    "image": "/images/items/dropper.png"
+  },
+  {
+    "id": "target_block",
+    "name": "Target Block",
+    "image": "/images/items/target.png"
+  },
+  {
+    "id": "redstone_torch",
+    "name": "Redstone Torch",
+    "image": "/images/items/redstone_torch.png"
+  }
+]

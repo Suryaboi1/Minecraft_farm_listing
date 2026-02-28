@@ -1,0 +1,69 @@
+/* BottomSheet.css */
+.bottom-sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.bottom-sheet-overlay.open {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    pointer-events: auto;
+}
+
+.bottom-sheet-content {
+    background-color: var(--surface-color);
+    width: 100%;
+    max-width: 800px;
+    /* Match app root */
+    max-height: 90vh;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 1rem 1.5rem 2rem;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+}
+
+.bottom-sheet-content.open {
+    transform: translateY(0);
+}
+
+.bottom-sheet-drag-handle {
+    width: 40px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    margin: 0 auto 1rem;
+}
+
+.bottom-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.bottom-sheet-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.bottom-sheet-body {
+    overflow-y: auto;
+    flex: 1;
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+}
