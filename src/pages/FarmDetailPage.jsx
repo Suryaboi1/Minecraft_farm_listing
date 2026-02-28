@@ -223,7 +223,18 @@ const FarmDetailPage = () => {
                                                 style={{ opacity: item.isCollected ? 0.5 : 1 }}
                                                 onClick={() => openEditItemSheet(item)}
                                             >
-                                                {item.image && <img src={item.image} alt={item.name} className="item-image" />}
+                                                {item.image && <img
+                                                    src={item.image}
+                                                    alt={item.name}
+                                                    className="item-image"
+                                                    onError={(e) => {
+                                                        if (e.target.src.includes('/items/')) {
+                                                            e.target.src = `https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/blocks/${item.id}.png`;
+                                                        } else {
+                                                            e.target.style.display = 'none';
+                                                        }
+                                                    }}
+                                                />}
                                                 <span style={{ textDecoration: item.isCollected ? 'line-through' : 'none' }}>{item.name}</span>
                                             </div>
                                         </td>

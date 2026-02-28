@@ -57,7 +57,7 @@ async function generate() {
             formattedItems.push({
                 id: raw.name,
                 name: raw.displayName,
-                image: `https://raw.githubusercontent.com/undrfined/mc-icons/master/items/${raw.name}.png`
+                image: `https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/${raw.name}.png`
             });
         }
 

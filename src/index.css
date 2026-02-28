@@ -380,9 +380,12 @@ button {
 /* Table */
 .table-container {
   border-radius: var(--border-radius-sm);
-  overflow: hidden;
+  overflow-x: auto;
+  /* Allow horizontal scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border-color);
-  margin: 0 1rem;
+  margin: 0;
+  /* Removing side margins to maximize space */
 }
 
 .items-table {
@@ -433,13 +436,11 @@ button {
 }
 
 .item-image {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
-  image-rendering: pixelated;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  padding: 2px;
+  image-rendering: auto;
+  background-color: transparent;
 }
 
 /* Styled Toggle */
@@ -581,20 +582,14 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
   transition: transform var(--transition-speed) ease;
 }
 
 .youtube-widget:hover .yt-play-overlay {
-  transform: translate(-50%, -50%) scale(1.1);
-  background-color: rgba(255, 0, 0, 0.8);
+  transform: translate(-50%, -50%) scale(1.15);
 }
 
 .yt-info {
@@ -629,4 +624,29 @@ button {
 
 .animate-fade-in {
   animation: fadeIn 0.4s ease forwards;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+
+  .items-table th,
+  .items-table td {
+    padding: 0.75rem 0.5rem;
+    /* Reduce padding on mobile */
+    font-size: 0.9rem;
+  }
+
+  .styled-toggle {
+    width: 38px;
+    height: 20px;
+  }
+
+  .styled-toggle::after {
+    width: 14px;
+    height: 14px;
+  }
+
+  .styled-toggle:checked::after {
+    transform: translateX(18px);
+  }
 }

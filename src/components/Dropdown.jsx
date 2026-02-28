@@ -31,7 +31,18 @@ const Dropdown = ({ options, value, onChange, placeholder = "Select an item..." 
             >
                 {selectedOption ? (
                     <div className="dropdown-selected">
-                        {selectedOption.image && <img src={selectedOption.image} alt={selectedOption.name} className="dropdown-image" onError={(e) => { e.target.style.display = 'none'; }} />}
+                        {selectedOption.image && <img
+                            src={selectedOption.image}
+                            alt={selectedOption.name}
+                            className="dropdown-image"
+                            onError={(e) => {
+                                if (e.target.src.includes('/items/')) {
+                                    e.target.src = `https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/blocks/${selectedOption.id}.png`;
+                                } else {
+                                    e.target.style.display = 'none';
+                                }
+                            }}
+                        />}
                         <span>{selectedOption.name}</span>
                     </div>
                 ) : (
@@ -65,7 +76,18 @@ const Dropdown = ({ options, value, onChange, placeholder = "Select an item..." 
                                         setSearchTerm('');
                                     }}
                                 >
-                                    {option.image && <img src={option.image} alt={option.name} className="dropdown-image" onError={(e) => { e.target.style.display = 'none'; }} />}
+                                    {option.image && <img
+                                        src={option.image}
+                                        alt={option.name}
+                                        className="dropdown-image"
+                                        onError={(e) => {
+                                            if (e.target.src.includes('/items/')) {
+                                                e.target.src = `https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/blocks/${option.id}.png`;
+                                            } else {
+                                                e.target.style.display = 'none';
+                                            }
+                                        }}
+                                    />}
                                     <span>{option.name}</span>
                                 </div>
                             ))
