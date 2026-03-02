@@ -626,6 +626,28 @@ button {
   animation: fadeIn 0.4s ease forwards;
 }
 
+/* Fixed Bottom CTA */
+.fixed-bottom-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: linear-gradient(to top, var(--bg-color) 60%, transparent);
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  /* Let clicks pass through the gradient if needed */
+}
+
+.fixed-bottom-cta button {
+  pointer-events: auto;
+  /* Re-enable clicks on the button */
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 600px) {
 

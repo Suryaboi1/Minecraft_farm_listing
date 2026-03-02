@@ -25,8 +25,8 @@ const FarmDetailPage = () => {
 
     // Item Form State
     const [selectedItemId, setSelectedItemId] = useState('');
-    const [quantityType, setQuantityType] = useState('items'); // 'items' or 'stacks'
-    const [quantityValue, setQuantityValue] = useState('');
+    const [stackQuantity, setStackQuantity] = useState('');
+    const [itemQuantity, setItemQuantity] = useState('');
 
     // Edit Form State
     const [isEditMode, setIsEditMode] = useState(false);
@@ -52,25 +52,18 @@ const FarmDetailPage = () => {
 
     const handleAddItem = (e) => {
         e.preventDefault();
-        if (!selectedItemId || !quantityValue || isNaN(quantityValue) || Number(quantityValue) < 0) return;
+
+        const stacks = stackQuantity ? Math.floor(Number(stackQuantity)) : 0;
+        const items = itemQuantity ? Math.floor(Number(itemQuantity)) : 0;
+
+        if (!selectedItemId || (stacks === 0 && items === 0)) return;
 
         const itemDef = minecraftItems.find(i => i.id === selectedItemId);
-        const value = Math.floor(Number(quantityValue));
-
-        let stacks = 0;
-        let quantity = 0;
-
-        if (quantityType === 'stacks') {
-            stacks = value;
-        } else {
-            stacks = Math.floor(value / 64);
-            quantity = value % 64;
-        }
 
         if (isEditMode && editItemId) {
             updateItemInFarm(id, editItemId, {
                 stacks,
-                quantity
+                quantity: items
             });
         } else {
             addItemToFarm(id, {
@@ -78,7 +71,7 @@ const FarmDetailPage = () => {
                 name: itemDef.name,
                 image: itemDef.image,
                 stacks,
-                quantity
+                quantity: items
             });
         }
 
@@ -87,15 +80,8 @@ const FarmDetailPage = () => {
 
     const openEditItemSheet = (item) => {
         setSelectedItemId(item.id);
-
-        // Convert back to simple value for form
-        if (item.stacks > 0 && item.quantity === 0) {
-            setQuantityType('stacks');
-            setQuantityValue(item.stacks.toString());
-        } else {
-            setQuantityType('items');
-            setQuantityValue(((item.stacks * 64) + item.quantity).toString());
-        }
+        setStackQuantity(item.stacks ? item.stacks.toString() : '');
+        setItemQuantity(item.quantity ? item.quantity.toString() : '');
 
         setIsEditMode(true);
         setEditItemId(item.id);
@@ -104,8 +90,8 @@ const FarmDetailPage = () => {
 
     const closeItemSheet = () => {
         setSelectedItemId('');
-        setQuantityValue('');
-        setQuantityType('items');
+        setStackQuantity('');
+        setItemQuantity('');
         setIsEditMode(false);
         setEditItemId(null);
         setIsSheetOpen(false);
@@ -156,13 +142,6 @@ const FarmDetailPage = () => {
                     </button>
                     <div style={{ flex: 1 }}></div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <button
-                            className="btn-primary"
-                            style={{ width: 'auto', padding: '0.5rem 1rem', fontSize: '0.9rem', marginRight: '0.5rem' }}
-                            onClick={() => setIsSheetOpen(true)}
-                        >
-                            <Plus size={18} /> Add Item
-                        </button>
                         <button
                             className="icon-btn"
                             onClick={() => setIsOptionsSheetOpen(true)}
@@ -263,6 +242,16 @@ const FarmDetailPage = () => {
                 )}
             </main>
 
+            {/* Fixed Bottom CTA */}
+            <div className="fixed-bottom-cta">
+                <button
+                    className="btn-primary"
+                    onClick={() => setIsSheetOpen(true)}
+                >
+                    <Plus size={20} /> Add Material
+                </button>
+            </div>
+
             <BottomSheet
                 isOpen={isSheetOpen}
                 onClose={closeItemSheet}
@@ -295,52 +284,38 @@ const FarmDetailPage = () => {
                         </div>
                     )}
 
-                    <div className="input-group">
-                        <label className="input-label">Quantity Type</label>
-                        <div className="radio-group">
-                            <label className="radio-label">
-                                <input
-                                    type="radio"
-                                    name="quantityType"
-                                    value="items"
-                                    checked={quantityType === 'items'}
-                                    onChange={() => setQuantityType('items')}
-                                />
-                                Items
-                            </label>
-                            <label className="radio-label">
-                                <input
-                                    type="radio"
-                                    name="quantityType"
-                                    value="stacks"
-                                    checked={quantityType === 'stacks'}
-                                    onChange={() => setQuantityType('stacks')}
-                                />
-                                Stacks (x64)
-                            </label>
+                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                        <div className="input-group" style={{ marginBottom: 0, flex: 1 }}>
+                            <label htmlFor="stackQuantity" className="input-label">Stack Qnty.</label>
+                            <input
+                                id="stackQuantity"
+                                type="number"
+                                min="0"
+                                className="input-field"
+                                placeholder="0"
+                                value={stackQuantity}
+                                onChange={(e) => setStackQuantity(e.target.value)}
+                            />
                         </div>
-                    </div>
 
-                    <div className="input-group">
-                        <label htmlFor="quantityValue" className="input-label">
-                            Amount In {quantityType === 'stacks' ? 'Stacks' : 'Items'} *
-                        </label>
-                        <input
-                            id="quantityValue"
-                            type="number"
-                            min="1"
-                            className="input-field"
-                            placeholder="e.g. 10"
-                            value={quantityValue}
-                            onChange={(e) => setQuantityValue(e.target.value)}
-                            required
-                        />
+                        <div className="input-group" style={{ marginBottom: 0, flex: 1 }}>
+                            <label htmlFor="itemQuantity" className="input-label">Item Qnty.</label>
+                            <input
+                                id="itemQuantity"
+                                type="number"
+                                min="0"
+                                className="input-field"
+                                placeholder="0"
+                                value={itemQuantity}
+                                onChange={(e) => setItemQuantity(e.target.value)}
+                            />
+                        </div>
                     </div>
 
                     <button
                         type="submit"
                         className="btn-primary mt-3"
-                        disabled={!selectedItemId || !quantityValue}
+                        disabled={!selectedItemId || (!stackQuantity && !itemQuantity)}
                     >
                         {isEditMode ? "Update Item" : "Add to Farm"}
                     </button>

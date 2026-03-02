@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Search } from 'lucide-react';
+import { ChevronDown, X } from 'lucide-react';
 import './Dropdown.css';
 
-const Dropdown = ({ options, value, onChange, placeholder = "Select an item..." }) => {
+const Dropdown = ({ options, value, onChange, placeholder = "Search items..." }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const dropdownRef = useRef(null);
@@ -13,25 +13,48 @@ const Dropdown = ({ options, value, onChange, placeholder = "Select an item..." 
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsOpen(false);
+                setSearchTerm(''); // Reset search term when closing
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    // If an option is selected, we don't need to filter by search term in the dropdown,
+    // or maybe we do if they are clicking to change it.
+    // If it's closed, selectedOption is shown. If open, we show input.
+    
+    // Derived term: if open and typing, use searchTerm. If closed and selected, use selected name conceptually.
+    // Actually, let's keep it simple: input value is searchTerm if open, or selected option name if closed.
+    const displayValue = isOpen 
+        ? searchTerm 
+        : (selectedOption ? selectedOption.name : '');
+
     const filteredOptions = options.filter(opt =>
         opt.name.toLowerCase().includes(searchTerm.toLowerCase())
     ).slice(0, 100); // Limit to 100 rendered items to prevent DOM freezing
 
+    const handleClear = (e) => {
+        e.stopPropagation();
+        onChange('');
+        setSearchTerm('');
+        setIsOpen(true);
+    };
+
     return (
         <div className="dropdown-container" ref={dropdownRef}>
             <div
-                className={`dropdown-trigger ${isOpen ? 'open' : ''} ${!value ? 'placeholder' : ''}`}
-                onClick={() => setIsOpen(!isOpen)}
+                className={`dropdown-trigger ${isOpen ? 'open' : ''} ${!value && !isOpen ? 'placeholder' : ''}`}
+                onClick={() => {
+                    if (!isOpen) {
+                        setIsOpen(true);
+                        setSearchTerm('');
+                    }
+                }}
             >
-                {selectedOption ? (
-                    <div className="dropdown-selected">
-                        {selectedOption.image && <img
+                <div className="dropdown-input-wrapper">
+                    {selectedOption && !isOpen && selectedOption.image && (
+                        <img
                             src={selectedOption.image}
                             alt={selectedOption.name}
                             className="dropdown-image"
@@ -42,28 +65,42 @@ const Dropdown = ({ options, value, onChange, placeholder = "Select an item..." 
                                     e.target.style.display = 'none';
                                 }
                             }}
-                        />}
-                        <span>{selectedOption.name}</span>
-                    </div>
-                ) : (
-                    <span>{placeholder}</span>
-                )}
-                <ChevronDown size={20} className="dropdown-chevron" />
+                        />
+                    )}
+                    <input
+                        type="text"
+                        className="dropdown-inline-input"
+                        placeholder={selectedOption && !isOpen ? '' : placeholder}
+                        value={displayValue}
+                        onChange={(e) => {
+                            if (!isOpen) setIsOpen(true);
+                            setSearchTerm(e.target.value);
+                            // If user types, we should probably clear the selection so it doesn't stay selected
+                            if (value) {
+                                onChange('');
+                            }
+                        }}
+                        readOnly={!isOpen && !!selectedOption} // Prevent mobile keyboard if just viewing
+                    />
+                </div>
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    {selectedOption && (
+                        <button 
+                            className="dropdown-clear-btn" 
+                            onClick={handleClear}
+                            type="button"
+                            aria-label="Clear selection"
+                        >
+                            <X size={16} />
+                        </button>
+                    )}
+                    <ChevronDown size={20} className="dropdown-chevron" />
+                </div>
             </div>
 
             {isOpen && (
                 <div className="dropdown-menu animate-dropdown-open">
-                    <div className="dropdown-search">
-                        <Search size={16} className="search-icon" />
-                        <input
-                            type="text"
-                            placeholder="Search items..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            onClick={(e) => e.stopPropagation()}
-                            autoFocus
-                        />
-                    </div>
                     <div className="dropdown-options">
                         {filteredOptions.length > 0 ? (
                             filteredOptions.map(option => (
