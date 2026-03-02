@@ -23,16 +23,37 @@ const Dropdown = ({ options, value, onChange, placeholder = "Search items..." })
     // If an option is selected, we don't need to filter by search term in the dropdown,
     // or maybe we do if they are clicking to change it.
     // If it's closed, selectedOption is shown. If open, we show input.
-    
+
     // Derived term: if open and typing, use searchTerm. If closed and selected, use selected name conceptually.
     // Actually, let's keep it simple: input value is searchTerm if open, or selected option name if closed.
-    const displayValue = isOpen 
-        ? searchTerm 
+    const displayValue = isOpen
+        ? searchTerm
         : (selectedOption ? selectedOption.name : '');
 
-    const filteredOptions = options.filter(opt =>
-        opt.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ).slice(0, 100); // Limit to 100 rendered items to prevent DOM freezing
+    let filteredOptions = options;
+    if (searchTerm) {
+        const lowerTerm = searchTerm.toLowerCase();
+        filteredOptions = options
+            .filter(opt => opt.name.toLowerCase().includes(lowerTerm))
+            .sort((a, b) => {
+                const aName = a.name.toLowerCase();
+                const bName = b.name.toLowerCase();
+
+                // Exact match gets highest priority
+                if (aName === lowerTerm) return -1;
+                if (bName === lowerTerm) return 1;
+
+                // Starts with gets second priority
+                const aStarts = aName.startsWith(lowerTerm);
+                const bStarts = bName.startsWith(lowerTerm);
+                if (aStarts && !bStarts) return -1;
+                if (!aStarts && bStarts) return 1;
+
+                // Otherwise, preserve alphabetical sort for remaining items
+                return aName.localeCompare(bName);
+            });
+    }
+    filteredOptions = filteredOptions.slice(0, 100); // Limit to 100 rendered items to prevent DOM freezing
 
     const handleClear = (e) => {
         e.stopPropagation();
@@ -83,11 +104,11 @@ const Dropdown = ({ options, value, onChange, placeholder = "Search items..." })
                         readOnly={!isOpen && !!selectedOption} // Prevent mobile keyboard if just viewing
                     />
                 </div>
-                
+
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     {selectedOption && (
-                        <button 
-                            className="dropdown-clear-btn" 
+                        <button
+                            className="dropdown-clear-btn"
                             onClick={handleClear}
                             type="button"
                             aria-label="Clear selection"
