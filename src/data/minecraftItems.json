@@ -1152,11 +1152,6 @@
   {
     "id": "chest",
     "name": "Chest",
-    "image": "/images/items/chest.png"
-  },
-  {
-    "id": "chest",
-    "name": "Chest",
     "image": "/images/items/minecraft_chest.png"
   },
   {
@@ -1322,11 +1317,6 @@
   {
     "id": "cobblestone",
     "name": "Cobblestone",
-    "image": "/images/items/cobblestone.png"
-  },
-  {
-    "id": "cobblestone",
-    "name": "Cobblestone",
     "image": "/images/items/minecraft_cobblestone.png"
   },
   {
@@ -1378,11 +1368,6 @@
     "id": "command_block_minecart",
     "name": "Command Block Minecart",
     "image": "/images/items/minecraft_command_block_minecart.png"
-  },
-  {
-    "id": "comparator",
-    "name": "Comparator",
-    "image": "/images/items/comparator.png"
   },
   {
     "id": "comparator",
@@ -2257,11 +2242,6 @@
   {
     "id": "dirt",
     "name": "Dirt",
-    "image": "/images/items/dirt.png"
-  },
-  {
-    "id": "dirt",
-    "name": "Dirt",
     "image": "/images/items/minecraft_dirt.png"
   },
   {
@@ -2273,11 +2253,6 @@
     "id": "disc_fragment_5",
     "name": "Disc Fragment 5",
     "image": "/images/items/minecraft_disc_fragment_5.png"
-  },
-  {
-    "id": "dispenser",
-    "name": "Dispenser",
-    "image": "/images/items/dispenser.png"
   },
   {
     "id": "dispenser",
@@ -2328,11 +2303,6 @@
     "id": "dripstone_block",
     "name": "Dripstone Block",
     "image": "/images/items/minecraft_dripstone_block.png"
-  },
-  {
-    "id": "dropper",
-    "name": "Dropper",
-    "image": "/images/items/dropper.png"
   },
   {
     "id": "dropper",
@@ -2728,11 +2698,6 @@
     "id": "gilded_blackstone",
     "name": "Gilded Blackstone",
     "image": "/images/items/minecraft_gilded_blackstone.png"
-  },
-  {
-    "id": "glass",
-    "name": "Glass",
-    "image": "/images/items/glass.png"
   },
   {
     "id": "glass",
@@ -3147,11 +3112,6 @@
   {
     "id": "honey_block",
     "name": "Honey Block",
-    "image": "/images/items/honey_block.png"
-  },
-  {
-    "id": "honey_block",
-    "name": "Honey Block",
     "image": "/images/items/minecraft_honey_block.png"
   },
   {
@@ -3168,11 +3128,6 @@
     "id": "honeycomb_block",
     "name": "Honeycomb Block",
     "image": "/images/items/minecraft_honeycomb_block.png"
-  },
-  {
-    "id": "hopper",
-    "name": "Hopper",
-    "image": "/images/items/hopper.png"
   },
   {
     "id": "hopper",
@@ -3523,11 +3478,6 @@
     "id": "large_fern",
     "name": "Large Fern",
     "image": "/images/items/minecraft_large_fern.png"
-  },
-  {
-    "id": "lava_bucket",
-    "name": "Lava Bucket",
-    "image": "/images/items/lava_bucket.png"
   },
   {
     "id": "lava_bucket",
@@ -4530,11 +4480,6 @@
     "image": "/images/items/minecraft_oak_planks.png"
   },
   {
-    "id": "oak_planks",
-    "name": "Oak Planks",
-    "image": "/images/items/oak_planks.png"
-  },
-  {
     "id": "oak_pressure_plate",
     "name": "Oak Pressure Plate",
     "image": "/images/items/minecraft_oak_pressure_plate.png"
@@ -4578,11 +4523,6 @@
     "id": "observer",
     "name": "Observer",
     "image": "/images/items/minecraft_observer.png"
-  },
-  {
-    "id": "observer",
-    "name": "Observer",
-    "image": "/images/items/observer.png"
   },
   {
     "id": "obsidian",
@@ -5058,11 +4998,6 @@
     "id": "piston",
     "name": "Piston",
     "image": "/images/items/minecraft_piston.png"
-  },
-  {
-    "id": "piston",
-    "name": "Piston",
-    "image": "/images/items/piston.png"
   },
   {
     "id": "pitcher_plant",
@@ -5700,11 +5635,6 @@
     "image": "/images/items/minecraft_redstone.png"
   },
   {
-    "id": "redstone",
-    "name": "Redstone",
-    "image": "/images/items/redstone.png"
-  },
-  {
     "id": "redstone_block",
     "name": "Redstone Block",
     "image": "/images/items/minecraft_redstone_block.png"
@@ -5725,11 +5655,6 @@
     "image": "/images/items/minecraft_redstone_torch.png"
   },
   {
-    "id": "redstone_torch",
-    "name": "Redstone Torch",
-    "image": "/images/items/redstone_torch.png"
-  },
-  {
     "id": "reinforced_deepslate",
     "name": "Reinforced Deepslate",
     "image": "/images/items/minecraft_reinforced_deepslate.png"
@@ -5738,11 +5663,6 @@
     "id": "repeater",
     "name": "Repeater",
     "image": "/images/items/minecraft_repeater.png"
-  },
-  {
-    "id": "repeater",
-    "name": "Repeater",
-    "image": "/images/items/repeater.png"
   },
   {
     "id": "repeating_command_block",
@@ -6013,11 +5933,6 @@
     "id": "slime_block",
     "name": "Slime Block",
     "image": "/images/items/minecraft_slime_block.png"
-  },
-  {
-    "id": "slime_block",
-    "name": "Slime Block",
-    "image": "/images/items/slime_block.png"
   },
   {
     "id": "slime_spawn_egg",
@@ -6320,11 +6235,6 @@
     "image": "/images/items/minecraft_sticky_piston.png"
   },
   {
-    "id": "sticky_piston",
-    "name": "Sticky Piston",
-    "image": "/images/items/sticky_piston.png"
-  },
-  {
     "id": "stone",
     "name": "Stone",
     "image": "/images/items/minecraft_stone.png"
@@ -6603,11 +6513,6 @@
     "id": "target",
     "name": "Target",
     "image": "/images/items/minecraft_target.png"
-  },
-  {
-    "id": "target",
-    "name": "Target",
-    "image": "/images/items/target.png"
   },
   {
     "id": "terracotta",
@@ -6943,11 +6848,6 @@
     "id": "water_bucket",
     "name": "Water Bucket",
     "image": "/images/items/minecraft_water_bucket.png"
-  },
-  {
-    "id": "water_bucket",
-    "name": "Water Bucket",
-    "image": "/images/items/water_bucket.png"
   },
   {
     "id": "waxed_chiseled_copper",
