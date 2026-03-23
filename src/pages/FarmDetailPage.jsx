@@ -43,7 +43,7 @@ const FarmDetailPage = () => {
         return (
             <div className="empty-state animate-fade-in">
                 <h2>Farm Not Found</h2>
-                <button className="btn-primary mt-2" onClick={() => navigate('/')}>
+                <button className="btn-primary mt-2" onClick={() => navigate('/minecraft-lister')}>
                     Go Home
                 </button>
             </div>
@@ -110,7 +110,7 @@ const FarmDetailPage = () => {
 
     const handleDeleteFarm = () => {
         deleteFarm(id);
-        navigate('/');
+        navigate('/minecraft-lister');
     };
 
     const openEditFarm = () => {
@@ -137,7 +137,7 @@ const FarmDetailPage = () => {
         <div className="animate-fade-in">
             <header className="app-header">
                 <div className="page-header">
-                    <button className="icon-btn" onClick={() => navigate('/')} aria-label="Go Back">
+                    <button className="icon-btn" onClick={() => navigate('/minecraft-lister')} aria-label="Go Back">
                         <ChevronLeft size={24} />
                     </button>
                     <div style={{ flex: 1 }}></div>

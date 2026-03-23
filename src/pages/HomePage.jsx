@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, Droplets, MapPin } from 'lucide-react';
+import { ChevronRight, Droplets, MapPin, ChevronLeft } from 'lucide-react';
 import FloatingActionButton from '../components/FloatingActionButton';
 import BottomSheet from '../components/BottomSheet';
 import useFarmStore from '../store/farmStore';
@@ -31,13 +31,18 @@ const HomePage = () => {
     return (
         <div className="animate-fade-in">
             <header className="app-header">
-                <div className="logo-container">
-                    <img
-                        src="/images/minecraft.png"
-                        alt="Minecraft Logo"
-                        className="logo-image"
-                        style={{ filter: 'drop-shadow(0 0 10px rgba(0, 230, 118, 0.4))', height: '60px', objectFit: 'contain' }}
-                    />
+                <div className="page-header" style={{ display: 'flex', width: '100%' }}>
+                    <button className="icon-btn" onClick={() => navigate('/')} aria-label="Go to Home" style={{ position: 'absolute' }}>
+                        <ChevronLeft size={24} />
+                    </button>
+                    <div className="logo-container" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                        <img
+                            src="/images/minecraft.png"
+                            alt="Minecraft Logo"
+                            className="logo-image"
+                            style={{ filter: 'drop-shadow(0 0 10px rgba(0, 230, 118, 0.4))', height: '60px', objectFit: 'contain' }}
+                        />
+                    </div>
                 </div>
             </header>
 
@@ -53,7 +58,7 @@ const HomePage = () => {
                         <div
                             key={farm.id}
                             className="farm-card"
-                            onClick={() => navigate(`/farm/${farm.id}`)}
+                            onClick={() => navigate(`/minecraft-lister/farm/${farm.id}`)}
                         >
                             <div className="farm-card-content">
                                 <h2>{farm.name}</h2>
