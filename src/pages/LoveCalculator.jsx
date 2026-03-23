@@ -9,7 +9,7 @@ function cleanName(name) {
 function alphaSum(name) {
     let total = 0;
     for (const ch of name) {
-        total += ch.charCodeAt(0) - 96; // a=1 ... z=26
+        total += ch.charCodeAt(0) - 96;
     }
     return total;
 }
@@ -28,7 +28,6 @@ function commonUniqueLetters(a, b) {
     return count;
 }
 
-// Simple deterministic hash
 function hashStr(str) {
     let h = 7;
     for (const ch of str) {
@@ -43,45 +42,26 @@ function loveCalculator(name1, name2) {
 
     if (!a || !b) return null;
 
-    // 1) Real-looking base score
     const sum1 = alphaSum(a);
     const sum2 = alphaSum(b);
     const common = commonUniqueLetters(a, b);
     const v1 = vowelCount(a);
     const v2 = vowelCount(b);
 
-    const vowelBonus =
-        v1 === v2 ? 6 : Math.abs(v1 - v2) === 1 ? 3 : 0;
-
-    const edgeBonus =
-        (a[0] === b[0] ? 8 : 0) +
-        (a[a.length - 1] === b[b.length - 1] ? 5 : 0);
-
+    const vowelBonus = v1 === v2 ? 6 : Math.abs(v1 - v2) === 1 ? 3 : 0;
+    const edgeBonus = (a[0] === b[0] ? 8 : 0) + (a[a.length - 1] === b[b.length - 1] ? 5 : 0);
     const lenBonus = Math.abs(a.length - b.length) <= 1 ? 5 : 0;
 
-    let basePercent =
-        35 +
-        (
-            (sum1 * 3) +
-            (sum2 * 2) +
-            (a.length * b.length) +
-            (common * 7) +
-            vowelBonus +
-            edgeBonus +
-            lenBonus
-        ) % 66;
+    let basePercent = 35 + ((sum1 * 3) + (sum2 * 2) + (a.length * b.length) + (common * 7) + vowelBonus + edgeBonus + lenBonus) % 66;
 
-    // 2) Hidden calibration layer
-    const pairHash = hashStr([a, b].sort().join("|")); // order-independent
+    const pairHash = hashStr([a, b].sort().join("|"));
 
-    // Specific pair overrides ONLY
     const pairOverrides = new Map([
         [hashStr(["arjun", "naina"].sort().join("|")), 68],
         [hashStr(["naina", "surya"].sort().join("|")), 95],
         [hashStr(["naina", "suryakant"].sort().join("|")), 94],
     ]);
 
-    // Pair priority ONLY
     if (pairOverrides.has(pairHash)) return pairOverrides.get(pairHash);
 
     return basePercent;
@@ -93,8 +73,8 @@ const LoveCalculator = () => {
     const [name2, setName2] = useState('');
     const [result, setResult] = useState(null);
     const [isCalculating, setIsCalculating] = useState(false);
+    const [specialMessage, setSpecialMessage] = useState(null);
 
-    // Inject animations dynamically
     useEffect(() => {
         const styleSheet = document.createElement("style");
         styleSheet.type = "text/css";
@@ -147,15 +127,23 @@ const LoveCalculator = () => {
         e.preventDefault();
         setResult(null);
         setIsCalculating(true);
+        setSpecialMessage(null);
 
         setTimeout(() => {
-            const score = loveCalculator(name1, name2);
-            setResult(score);
+            const a = cleanName(name1);
+            const b = cleanName(name2);
+
+            if ((a === 'yashika' && b === 'aditi') || (a === 'aditi' && b === 'yashika')) {
+                setResult(0);
+                setSpecialMessage("Tch tch tch! bro! move on!");
+            } else {
+                const score = loveCalculator(name1, name2);
+                setResult(score);
+            }
             setIsCalculating(false);
-        }, 1800); // Sexy suspense
+        }, 1800);
     };
 
-    // Generate some random floating hearts for the BG
     const floatingHearts = Array.from({ length: 15 }).map((_, i) => ({
         left: Math.random() * 100 + 'vw',
         animationDuration: (Math.random() * 4 + 5) + 's',
@@ -170,7 +158,6 @@ const LoveCalculator = () => {
             padding: '2rem 1rem', fontFamily: "'Inter', sans-serif", zIndex: 100, overflow: 'hidden'
         }}>
 
-            {/* Background Floating Hearts */}
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'hidden' }}>
                 {floatingHearts.map((style, i) => (
                     <Heart key={i} size={style.size} fill="rgba(255,255,255,0.6)" color="rgba(255,255,255,0.6)" style={{
@@ -193,17 +180,17 @@ const LoveCalculator = () => {
                     >
                         <ChevronLeft size={28} />
                     </button>
-                    <h1 style={{ flex: 1, textAlign: 'center', color: '#fff', margin: 0, fontSize: '2.4rem', fontWeight: 900, textShadow: '0 4px 15px rgba(0,0,0,0.15)', letterSpacing: '-1px' }}>
-                        Love Calc
+                    <h1 style={{ flex: 1, textAlign: 'center', color: '#fff', margin: 0, fontSize: '2rem', fontWeight: 900, textShadow: '0 4px 15px rgba(0,0,0,0.15)', letterSpacing: '-0.5px' }}>
+                        Love Calculator
                     </h1>
                     <div style={{ width: '45px' }}></div>
                 </header>
 
                 <main className="glass-card" style={{
-                    borderRadius: '30px', padding: '3rem 2rem', textAlign: 'center'
+                    borderRadius: '30px', padding: '2.5rem 1.5rem', textAlign: 'center'
                 }}>
-                    <form onSubmit={handleCalculate} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <div style={{ position: 'relative' }}>
+                    <form onSubmit={handleCalculate} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div style={{ position: 'relative', marginTop: '1rem' }}>
                             <input
                                 type="text"
                                 className="custom-input"
@@ -226,12 +213,12 @@ const LoveCalculator = () => {
                             </span>
                         </div>
 
-                        <div style={{ display: 'flex', justifyContent: 'center', margin: '-1.5rem 0' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem 0' }}>
                             <div style={{
-                                background: '#fff', borderRadius: '50%', padding: '12px',
-                                boxShadow: '0 8px 25px rgba(255, 75, 75, 0.3)', zIndex: 2
+                                background: '#fff', borderRadius: '50%', padding: '10px',
+                                boxShadow: '0 4px 15px rgba(255, 75, 75, 0.2)'
                             }}>
-                                <Heart size={32} color="#ff4b4b" fill="#ff4b4b" style={{ animation: isCalculating ? 'pulseHeart 0.6s infinite' : 'none' }} />
+                                <Heart size={28} color="#ff4b4b" fill="#ff4b4b" style={{ animation: isCalculating ? 'pulseHeart 0.6s infinite' : 'none' }} />
                             </div>
                         </div>
 
@@ -275,7 +262,7 @@ const LoveCalculator = () => {
 
                     {result !== null && !isCalculating && (
                         <div style={{
-                            marginTop: '3rem', animation: 'slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+                            marginTop: '2.5rem', animation: 'slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
                         }}>
                             <p style={{ fontSize: '0.9rem', color: '#666', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem', fontWeight: 800 }}>Compatibility</p>
                             <div style={{
@@ -289,10 +276,11 @@ const LoveCalculator = () => {
                             <p style={{
                                 marginTop: '1rem', fontSize: '1.3rem', color: '#ff0f4b', fontWeight: '900'
                             }}>
-                                {result > 80 ? "Matches made in heaven ✨" :
-                                    result > 60 ? "There is a spark! 💖" :
-                                        result > 40 ? "Maybe some effort? 🤔" :
-                                            "Friendzone forever 😬"}
+                                {specialMessage ? specialMessage :
+                                    result > 80 ? "Matches made in heaven ✨" :
+                                        result > 60 ? "There is a spark! 💖" :
+                                            result > 40 ? "Maybe some effort? 🤔" :
+                                                "Friendzone forever 😬"}
                             </p>
                         </div>
                     )}
