@@ -175,9 +175,9 @@ const LoveCalculator = () => {
                 {floatingHearts.map((style, i) => (
                     <Heart key={i} size={style.size} fill="rgba(255,255,255,0.6)" color="rgba(255,255,255,0.6)" style={{
                         position: 'absolute', bottom: '-50px', left: style.left,
-                        animation: \`floatHeart \${style.animationDuration} ease-in infinite \${style.animationDelay}\`
-          }} />
-        ))}
+                        animation: `floatHeart ${style.animationDuration} ease-in infinite ${style.animationDelay}`
+                    }} />
+                ))}
             </div>
 
             <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '450px' }}>
