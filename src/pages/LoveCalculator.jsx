@@ -60,6 +60,8 @@ function loveCalculator(name1, name2) {
         [hashStr(["arjun", "naina"].sort().join("|")), 68],
         [hashStr(["naina", "surya"].sort().join("|")), 95],
         [hashStr(["naina", "suryakant"].sort().join("|")), 94],
+        [hashStr(["surya", "yashika"].sort().join("|")), 78],
+        [hashStr(["suryakant", "yashika"].sort().join("|")), 78],
     ]);
 
     if (pairOverrides.has(pairHash)) return pairOverrides.get(pairHash);
