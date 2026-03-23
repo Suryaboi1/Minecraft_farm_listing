@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Heart } from 'lucide-react';
 
@@ -72,25 +72,16 @@ function loveCalculator(name1, name2) {
         ) % 66;
 
     // 2) Hidden calibration layer
-    const hashA = hashStr(a);
-    const hashB = hashStr(b);
     const pairHash = hashStr([a, b].sort().join("|")); // order-independent
 
-    // Hidden numeric signatures
-    const singleOverrides = new Map([
-        [246202, 94], // "suryakant"
-        [206991, 95], // "surya"
-    ]);
-
+    // Specific pair overrides ONLY
     const pairOverrides = new Map([
-        [75825, 68], // "arjun|naina"
+        [hashStr(["arjun", "naina"].sort().join("|")), 68],
+        [hashStr(["naina", "surya"].sort().join("|")), 95],
+        [hashStr(["naina", "suryakant"].sort().join("|")), 94],
     ]);
 
-    // Single-name priority
-    if (singleOverrides.has(hashA)) return singleOverrides.get(hashA);
-    if (singleOverrides.has(hashB)) return singleOverrides.get(hashB);
-
-    // Pair priority
+    // Pair priority ONLY
     if (pairOverrides.has(pairHash)) return pairOverrides.get(pairHash);
 
     return basePercent;
@@ -101,137 +92,207 @@ const LoveCalculator = () => {
     const [name1, setName1] = useState('');
     const [name2, setName2] = useState('');
     const [result, setResult] = useState(null);
+    const [isCalculating, setIsCalculating] = useState(false);
+
+    // Inject animations dynamically
+    useEffect(() => {
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+      @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      @keyframes floatHeart {
+        0% { transform: translateY(0px) scale(1) rotate(0deg); opacity: 0; }
+        20% { opacity: 0.8; }
+        100% { transform: translateY(-100vh) scale(1.5) rotate(45deg); opacity: 0; }
+      }
+      @keyframes pulseHeart {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.15); filter: drop-shadow(0 0 15px rgba(255,51,102,0.8)); }
+        100% { transform: scale(1); }
+      }
+      @keyframes slideUpFade {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      .fancy-bg {
+        background: linear-gradient(-45deg, #ff9a9e, #fecfef, #fbc2eb, #a18cd1);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+      .custom-input {
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+      }
+      .custom-input:focus {
+        border-color: #ff4b4b !important;
+        box-shadow: 0 0 0 4px rgba(255, 75, 75, 0.15), inset 0 2px 5px rgba(0,0,0,0.02) !important;
+        background-color: #fff !important;
+      }
+    `;
+        document.head.appendChild(styleSheet);
+        return () => document.head.removeChild(styleSheet);
+    }, []);
 
     const handleCalculate = (e) => {
         e.preventDefault();
-        const score = loveCalculator(name1, name2);
-        setResult(score);
+        setResult(null);
+        setIsCalculating(true);
+
+        setTimeout(() => {
+            const score = loveCalculator(name1, name2);
+            setResult(score);
+            setIsCalculating(false);
+        }, 1800); // Sexy suspense
     };
 
+    // Generate some random floating hearts for the BG
+    const floatingHearts = Array.from({ length: 15 }).map((_, i) => ({
+        left: Math.random() * 100 + 'vw',
+        animationDuration: (Math.random() * 4 + 5) + 's',
+        animationDelay: Math.random() * 5 + 's',
+        size: Math.random() * 20 + 15 + 'px'
+    }));
+
     return (
-        <div style={{
-            backgroundColor: '#fff0f3',
-            color: '#333',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            minHeight: '100vh',
-            padding: '0 1rem',
-            fontFamily: "'Inter', sans-serif",
-            zIndex: 100
+        <div className="fancy-bg" style={{
+            position: 'absolute', top: 0, left: 0, right: 0, minHeight: '100vh',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            padding: '2rem 1rem', fontFamily: "'Inter', sans-serif", zIndex: 100, overflow: 'hidden'
         }}>
-            <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem 0' }}>
+
+            {/* Background Floating Hearts */}
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'hidden' }}>
+                {floatingHearts.map((style, i) => (
+                    <Heart key={i} size={style.size} fill="rgba(255,255,255,0.6)" color="rgba(255,255,255,0.6)" style={{
+                        position: 'absolute', bottom: '-50px', left: style.left,
+                        animation: \`floatHeart \${style.animationDuration} ease-in infinite \${style.animationDelay}\`
+          }} />
+        ))}
+            </div>
+
+            <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '450px' }}>
                 <header style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
                     <button
                         onClick={() => navigate('/')}
                         style={{
-                            background: 'none', border: 'none', cursor: 'pointer',
-                            color: '#ff4b4b', display: 'flex', alignItems: 'center'
+                            background: 'rgba(255,255,255,0.4)', border: 'none', cursor: 'pointer',
+                            color: '#fff', borderRadius: '50%', width: '45px', height: '45px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(5px)',
+                            boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
                         }}
                     >
                         <ChevronLeft size={28} />
                     </button>
-                    <h1 style={{ flex: 1, textAlign: 'center', color: '#ff4b4b', margin: 0, fontSize: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                        <Heart size={32} fill="#ff4b4b" /> Love Calculator
+                    <h1 style={{ flex: 1, textAlign: 'center', color: '#fff', margin: 0, fontSize: '2.4rem', fontWeight: 900, textShadow: '0 4px 15px rgba(0,0,0,0.15)', letterSpacing: '-1px' }}>
+                        Love Calc
                     </h1>
-                    <div style={{ width: '28px' }}></div>
+                    <div style={{ width: '45px' }}></div>
                 </header>
 
-                <main style={{
-                    backgroundColor: '#ffffff',
-                    borderRadius: '24px',
-                    padding: '2.5rem 1.5rem',
-                    boxShadow: '0 10px 25px rgba(255, 75, 75, 0.15)',
-                    border: '1px solid #ffe3e3'
+                <main className="glass-card" style={{
+                    borderRadius: '30px', padding: '3rem 2rem', textAlign: 'center'
                 }}>
                     <form onSubmit={handleCalculate} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#ff4b4b' }}>Person 1</label>
+                        <div style={{ position: 'relative' }}>
                             <input
                                 type="text"
+                                className="custom-input"
                                 value={name1}
                                 onChange={(e) => setName1(e.target.value)}
-                                placeholder="Enter first name"
+                                placeholder="  "
                                 style={{
-                                    width: '100%',
-                                    padding: '1rem',
-                                    borderRadius: '12px',
-                                    border: '2px solid #ffccd5',
-                                    fontSize: '1.1rem',
-                                    outline: 'none',
-                                    color: '#333',
-                                    backgroundColor: '#fff',
-                                    boxSizing: 'border-box'
+                                    width: '100%', padding: '1.2rem 1rem', borderRadius: '16px',
+                                    border: '2px solid rgba(255,255,255,0.8)', fontSize: '1.2rem',
+                                    outline: 'none', color: '#333', backgroundColor: 'rgba(255,255,255,0.8)',
+                                    transition: 'all 0.3s ease', boxSizing: 'border-box', textAlign: 'center', fontWeight: 'bold'
                                 }}
                                 required
                             />
+                            <span style={{
+                                position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.9)', borderRadius: '10px',
+                                padding: '2px 10px', fontSize: '0.8rem', fontWeight: 800, color: '#ff4b4b', textTransform: 'uppercase', letterSpacing: '1px'
+                            }}>
+                                Your Name
+                            </span>
                         </div>
 
-                        <div style={{ display: 'flex', justifyContent: 'center', margin: '-0.5rem 0' }}>
-                            <Heart size={24} color="#ff4b4b" fill="#ff4b4b" />
+                        <div style={{ display: 'flex', justifyContent: 'center', margin: '-1.5rem 0' }}>
+                            <div style={{
+                                background: '#fff', borderRadius: '50%', padding: '12px',
+                                boxShadow: '0 8px 25px rgba(255, 75, 75, 0.3)', zIndex: 2
+                            }}>
+                                <Heart size={32} color="#ff4b4b" fill="#ff4b4b" style={{ animation: isCalculating ? 'pulseHeart 0.6s infinite' : 'none' }} />
+                            </div>
                         </div>
 
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#ff4b4b' }}>Person 2</label>
+                        <div style={{ position: 'relative' }}>
                             <input
                                 type="text"
+                                className="custom-input"
                                 value={name2}
                                 onChange={(e) => setName2(e.target.value)}
-                                placeholder="Enter second name"
+                                placeholder="  "
                                 style={{
-                                    width: '100%',
-                                    padding: '1rem',
-                                    borderRadius: '12px',
-                                    border: '2px solid #ffccd5',
-                                    fontSize: '1.1rem',
-                                    outline: 'none',
-                                    color: '#333',
-                                    backgroundColor: '#fff',
-                                    boxSizing: 'border-box'
+                                    width: '100%', padding: '1.2rem 1rem', borderRadius: '16px',
+                                    border: '2px solid rgba(255,255,255,0.8)', fontSize: '1.2rem',
+                                    outline: 'none', color: '#333', backgroundColor: 'rgba(255,255,255,0.8)',
+                                    transition: 'all 0.3s ease', boxSizing: 'border-box', textAlign: 'center', fontWeight: 'bold'
                                 }}
                                 required
                             />
+                            <span style={{
+                                position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.9)', borderRadius: '10px',
+                                padding: '2px 10px', fontSize: '0.8rem', fontWeight: 800, color: '#ff4b4b', textTransform: 'uppercase', letterSpacing: '1px'
+                            }}>
+                                Crush's Name
+                            </span>
                         </div>
 
                         <button
                             type="submit"
+                            disabled={isCalculating}
                             style={{
-                                backgroundColor: '#ff4b4b',
-                                color: 'white',
-                                border: 'none',
-                                padding: '1rem',
-                                borderRadius: '12px',
-                                fontSize: '1.2rem',
-                                fontWeight: 'bold',
-                                cursor: 'pointer',
-                                marginTop: '1rem',
-                                boxShadow: '0 4px 14px rgba(255, 75, 75, 0.4)'
+                                background: isCalculating ? '#ffb3c1' : 'linear-gradient(135deg, #ff4b4b 0%, #ff0f4b 100%)',
+                                color: 'white', border: 'none', padding: '1.2rem', borderRadius: '16px',
+                                fontSize: '1.2rem', fontWeight: '900', cursor: isCalculating ? 'wait' : 'pointer',
+                                marginTop: '1.5rem', transition: 'all 0.3s ease', textTransform: 'uppercase',
+                                letterSpacing: '2px', boxShadow: isCalculating ? 'none' : '0 10px 20px rgba(255, 75, 75, 0.4)',
+                                transform: isCalculating ? 'scale(0.98)' : 'scale(1)'
                             }}>
-                            Calculate Love
+                            {isCalculating ? 'Calculating...' : 'Calculate Love'}
                         </button>
                     </form>
 
-                    {result !== null && (
+                    {result !== null && !isCalculating && (
                         <div style={{
-                            marginTop: '2rem',
-                            textAlign: 'center',
-                            animation: 'fadeIn 0.5s ease'
+                            marginTop: '3rem', animation: 'slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
                         }}>
-                            <h2 style={{ fontSize: '1.2rem', color: '#666', marginBottom: '0.5rem' }}>Compatibility Score</h2>
+                            <p style={{ fontSize: '0.9rem', color: '#666', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem', fontWeight: 800 }}>Compatibility</p>
                             <div style={{
-                                fontSize: '4.5rem',
-                                fontWeight: '900',
-                                color: '#ff4b4b',
-                                background: '-webkit-linear-gradient(45deg, #ff4b4b, #ff8fa3)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                lineHeight: 1
+                                fontSize: '6rem', fontWeight: '900',
+                                background: 'linear-gradient(135deg, #ff0f4b, #ff758c)',
+                                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                                lineHeight: 1, filter: 'drop-shadow(0 4px 15px rgba(255, 75, 75, 0.3))'
                             }}>
                                 {result}%
                             </div>
-                            <p style={{ marginTop: '1rem', fontSize: '1.1rem', color: '#ff4b4b', fontWeight: 'bold' }}>
-                                {result > 80 ? "A True Match!" : result > 50 ? "There is Potential!" : "It might be tough..."}
+                            <p style={{
+                                marginTop: '1rem', fontSize: '1.3rem', color: '#ff0f4b', fontWeight: '900'
+                            }}>
+                                {result > 80 ? "Matches made in heaven ✨" :
+                                    result > 60 ? "There is a spark! 💖" :
+                                        result > 40 ? "Maybe some effort? 🤔" :
+                                            "Friendzone forever 😬"}
                             </p>
                         </div>
                     )}
