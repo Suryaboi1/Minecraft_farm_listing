@@ -74,6 +74,8 @@ const LoveCalculator = () => {
     const [result, setResult] = useState(null);
     const [isCalculating, setIsCalculating] = useState(false);
     const [specialMessage, setSpecialMessage] = useState(null);
+    const [isGlitching, setIsGlitching] = useState(false);
+    const [glitchText, setGlitchText] = useState('0%');
 
     useEffect(() => {
         const styleSheet = document.createElement("style");
@@ -89,14 +91,24 @@ const LoveCalculator = () => {
         20% { opacity: 0.8; }
         100% { transform: translateY(-100vh) scale(1.5) rotate(45deg); opacity: 0; }
       }
-      @keyframes pulseHeart {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.15); filter: drop-shadow(0 0 15px rgba(255,51,102,0.8)); }
-        100% { transform: scale(1); }
-      }
       @keyframes slideUpFade {
         from { transform: translateY(30px); opacity: 0; }
         to { transform: translateY(0); opacity: 1; }
+      }
+      @keyframes glitchEffect {
+        0% { transform: translate(0) }
+        20% { transform: translate(-3px, 3px) }
+        40% { transform: translate(-3px, -3px) }
+        60% { transform: translate(3px, 3px) }
+        80% { transform: translate(3px, -3px) }
+        100% { transform: translate(0) }
+      }
+      @keyframes glitchColors {
+        0% { text-shadow: 3px 0 red, -3px 0 cyan; }
+        25% { text-shadow: -3px 0 red, 3px 0 cyan; }
+        50% { text-shadow: 3px 3px red, -3px -3px cyan; }
+        75% { text-shadow: -3px -3px red, 3px 3px cyan; }
+        100% { text-shadow: 3px 0 red, -3px 0 cyan; }
       }
       .fancy-bg {
         background: linear-gradient(-45deg, #ff9a9e, #fecfef, #fbc2eb, #a18cd1);
@@ -118,16 +130,41 @@ const LoveCalculator = () => {
         box-shadow: 0 0 0 4px rgba(255, 75, 75, 0.15), inset 0 2px 5px rgba(0,0,0,0.02) !important;
         background-color: #fff !important;
       }
+      .glitching-container {
+        animation: glitchEffect 0.2s infinite;
+      }
+      .glitching-text {
+        color: #000 !important;
+        background: none !important;
+        -webkit-text-fill-color: #000 !important;
+        animation: glitchColors 0.1s infinite !important;
+      }
     `;
         document.head.appendChild(styleSheet);
         return () => document.head.removeChild(styleSheet);
     }, []);
+
+    useEffect(() => {
+        let interval;
+        if (isGlitching) {
+            interval = setInterval(() => {
+                const chars = '!<>-_\\\\/[]{}—=+*^?#_0123456789';
+                let str = '';
+                for (let i = 0; i < 4; i++) {
+                    str += chars[Math.floor(Math.random() * chars.length)];
+                }
+                setGlitchText(str + '%');
+            }, 50);
+        }
+        return () => clearInterval(interval);
+    }, [isGlitching]);
 
     const handleCalculate = (e) => {
         e.preventDefault();
         setResult(null);
         setIsCalculating(true);
         setSpecialMessage(null);
+        setIsGlitching(false);
 
         setTimeout(() => {
             const a = cleanName(name1);
@@ -135,13 +172,15 @@ const LoveCalculator = () => {
 
             if ((a === 'yashika' && b === 'aditi') || (a === 'aditi' && b === 'yashika')) {
                 setResult(0);
+                setIsGlitching(true);
                 setSpecialMessage("Tch tch tch! bro! move on!");
             } else {
                 const score = loveCalculator(name1, name2);
                 setResult(score);
+                setSpecialMessage(null);
             }
             setIsCalculating(false);
-        }, 1800);
+        }, 1500);
     };
 
     const floatingHearts = Array.from({ length: 15 }).map((_, i) => ({
@@ -189,7 +228,7 @@ const LoveCalculator = () => {
                 <main className="glass-card" style={{
                     borderRadius: '30px', padding: '2.5rem 1.5rem', textAlign: 'center'
                 }}>
-                    <form onSubmit={handleCalculate} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <form onSubmit={handleCalculate} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                         <div style={{ position: 'relative', marginTop: '1rem' }}>
                             <input
                                 type="text"
@@ -211,15 +250,6 @@ const LoveCalculator = () => {
                             }}>
                                 Your Name
                             </span>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem 0' }}>
-                            <div style={{
-                                background: '#fff', borderRadius: '50%', padding: '10px',
-                                boxShadow: '0 4px 15px rgba(255, 75, 75, 0.2)'
-                            }}>
-                                <Heart size={28} color="#ff4b4b" fill="#ff4b4b" style={{ animation: isCalculating ? 'pulseHeart 0.6s infinite' : 'none' }} />
-                            </div>
                         </div>
 
                         <div style={{ position: 'relative' }}>
@@ -252,7 +282,7 @@ const LoveCalculator = () => {
                                 background: isCalculating ? '#ffb3c1' : 'linear-gradient(135deg, #ff4b4b 0%, #ff0f4b 100%)',
                                 color: 'white', border: 'none', padding: '1.2rem', borderRadius: '16px',
                                 fontSize: '1.2rem', fontWeight: '900', cursor: isCalculating ? 'wait' : 'pointer',
-                                marginTop: '1.5rem', transition: 'all 0.3s ease', textTransform: 'uppercase',
+                                transition: 'all 0.3s ease', textTransform: 'uppercase',
                                 letterSpacing: '2px', boxShadow: isCalculating ? 'none' : '0 10px 20px rgba(255, 75, 75, 0.4)',
                                 transform: isCalculating ? 'scale(0.98)' : 'scale(1)'
                             }}>
@@ -261,19 +291,19 @@ const LoveCalculator = () => {
                     </form>
 
                     {result !== null && !isCalculating && (
-                        <div style={{
-                            marginTop: '2.5rem', animation: 'slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+                        <div className={isGlitching ? "glitching-container" : ""} style={{
+                            marginTop: '3.5rem', animation: isGlitching ? 'none' : 'slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
                         }}>
-                            <p style={{ fontSize: '0.9rem', color: '#666', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem', fontWeight: 800 }}>Compatibility</p>
-                            <div style={{
+                            <p style={{ fontSize: '0.9rem', color: isGlitching ? '#000' : '#666', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem', fontWeight: 800 }}>Compatibility</p>
+                            <div className={isGlitching ? "glitching-text" : ""} style={{
                                 fontSize: '6rem', fontWeight: '900',
                                 background: 'linear-gradient(135deg, #ff0f4b, #ff758c)',
                                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
                                 lineHeight: 1, filter: 'drop-shadow(0 4px 15px rgba(255, 75, 75, 0.3))'
                             }}>
-                                {result}%
+                                {isGlitching ? glitchText : `${result}%`}
                             </div>
-                            <p style={{
+                            <p className={isGlitching ? "glitching-text" : ""} style={{
                                 marginTop: '1rem', fontSize: '1.3rem', color: '#ff0f4b', fontWeight: '900'
                             }}>
                                 {specialMessage ? specialMessage :
