@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Gamepad2, Pickaxe } from 'lucide-react';
+import { Gamepad2, Pickaxe, Heart } from 'lucide-react';
 
 const LandingPage = () => {
     const navigate = useNavigate();
@@ -16,8 +16,8 @@ const LandingPage = () => {
 
             <main style={{ width: '100%', maxWidth: '800px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
                 {/* Card 1: Minecraft Farm Lister */}
-                <div 
-                    className="farm-card" 
+                <div
+                    className="farm-card"
                     onClick={() => navigate('/minecraft-lister')}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '2.5rem 1.5rem' }}
                 >
@@ -30,17 +30,18 @@ const LandingPage = () => {
                     </div>
                 </div>
 
-                {/* Card 2: Placeholder */}
-                <div 
+                {/* Card 2: Love Calculator */}
+                <div
                     className="farm-card"
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '2.5rem 1.5rem', cursor: 'default', opacity: 0.6 }}
+                    onClick={() => navigate('/love-calculator')}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '2.5rem 1.5rem', cursor: 'pointer' }}
                 >
-                    <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
-                        <Gamepad2 size={48} color="var(--text-secondary)" />
+                    <div style={{ backgroundColor: 'rgba(255, 75, 75, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
+                        <Heart size={48} color="#ff4b4b" />
                     </div>
                     <div className="farm-card-content">
-                        <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Coming Soon</h2>
-                        <p style={{ justifyContent: 'center' }}>New game tool will be added here</p>
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Love Calculator</h2>
+                        <p style={{ justifyContent: 'center' }}>Test your compatibility score</p>
                     </div>
                 </div>
             </main>
