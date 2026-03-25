@@ -168,6 +168,13 @@ const LoveCalculator = () => {
         setSpecialMessage(null);
         setIsGlitching(false);
 
+        if (name1.includes(' ') || name2.includes(' ')) {
+            setIsCalculating(false);
+            setResult(-1);
+            setSpecialMessage("Full name not allowed");
+            return;
+        }
+
         setTimeout(() => {
             const a = cleanName(name1);
             const b = cleanName(name2);
@@ -297,14 +304,17 @@ const LoveCalculator = () => {
                             marginTop: '3.5rem', animation: isGlitching ? 'none' : 'slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
                         }}>
                             <p style={{ fontSize: '0.9rem', color: isGlitching ? '#000' : '#666', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem', fontWeight: 800 }}>Compatibility</p>
-                            <div className={isGlitching ? "glitching-text" : ""} style={{
-                                fontSize: '6rem', fontWeight: '900',
-                                background: 'linear-gradient(135deg, #ff0f4b, #ff758c)',
-                                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                                lineHeight: 1, filter: 'drop-shadow(0 4px 15px rgba(255, 75, 75, 0.3))'
-                            }}>
-                                {isGlitching ? glitchText : `${result}%`}
-                            </div>
+
+                            {result !== -1 && (
+                                <div className={isGlitching ? "glitching-text" : ""} style={{
+                                    fontSize: '6rem', fontWeight: '900',
+                                    background: 'linear-gradient(135deg, #ff0f4b, #ff758c)',
+                                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                                    lineHeight: 1, filter: 'drop-shadow(0 4px 15px rgba(255, 75, 75, 0.3))'
+                                }}>
+                                    {isGlitching ? glitchText : `${result}%`}
+                                </div>
+                            )}
                             <p className={isGlitching ? "glitching-text" : ""} style={{
                                 marginTop: '1rem', fontSize: '1.3rem', color: '#ff0f4b', fontWeight: '900'
                             }}>
