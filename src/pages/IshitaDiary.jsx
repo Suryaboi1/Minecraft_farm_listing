@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, X, Image as ImageIcon, Edit2, Trash2, Heart } from 'lucide-react';
+import { Plus, X, Image as ImageIcon, Edit2, Trash2, Heart, Lock } from 'lucide-react';
 import './IshitaDiary.css';
 
 const IshitaDiary = () => {
@@ -17,6 +17,14 @@ const IshitaDiary = () => {
     const [fullScreenImage, setFullScreenImage] = useState(null);
 
     const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        // Enforce light background on body while mounted
+        document.body.style.backgroundColor = '#fff9fc';
+        return () => {
+            document.body.style.backgroundColor = '';
+        };
+    }, []);
 
     useEffect(() => {
         const saved = localStorage.getItem('ishita_diary_entries');
@@ -53,15 +61,26 @@ const IshitaDiary = () => {
             img.src = event.target.result;
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                // Target 1:1 compression
-                const minDim = Math.min(img.width, img.height);
-                const sx = (img.width - minDim) / 2;
-                const sy = (img.height - minDim) / 2;
+                let width = img.width;
+                let height = img.height;
+                const MAX_DIM = 800; // Cap to 800px to not break localStorage limits
 
-                canvas.width = 600;
-                canvas.height = 600;
+                if (width > height) {
+                    if (width > MAX_DIM) {
+                        height *= MAX_DIM / width;
+                        width = MAX_DIM;
+                    }
+                } else {
+                    if (height > MAX_DIM) {
+                        width *= MAX_DIM / height;
+                        height = MAX_DIM;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
                 const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, 600, 600);
+                ctx.drawImage(img, 0, 0, width, height);
 
                 setDraftImage(canvas.toDataURL('image/jpeg', 0.8));
             };
@@ -114,13 +133,30 @@ const IshitaDiary = () => {
         setEditingId(null);
     };
 
+    const formatTime = (isoString) => {
+        try {
+            return new Date(isoString).toLocaleString('en-US', {
+                month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        } catch (e) {
+            return '';
+        }
+    };
+
     return (
         <div className="diary-container">
-            <header className="diary-header" onClick={() => setShowCodeSheet(true)}>
-                <h1 className="diary-title">
-                    Ishita :3 <Heart size={20} color="#ff69b4" fill="#ff69b4" />
-                </h1>
-                {isEditMode && <span style={{ fontSize: '0.75rem', color: '#888' }}>Edit Mode Active</span>}
+            <header className="diary-header">
+                <div onClick={() => !isEditMode && setShowCodeSheet(true)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <h1 className="diary-title">
+                        Ishita :3 <Heart size={20} color="#ff69b4" fill="#ff69b4" />
+                    </h1>
+                </div>
+                {isEditMode && (
+                    <button className="exit-edit-btn" onClick={(e) => { e.stopPropagation(); setIsEditMode(false); }}>
+                        <Lock size={16} /> Exit Edit
+                    </button>
+                )}
             </header>
 
             <main className="diary-content">
@@ -132,6 +168,7 @@ const IshitaDiary = () => {
                 ) : (
                     entries.map(entry => (
                         <div key={entry.id} className="diary-card">
+                            <div className="diary-time-badge">{formatTime(entry.timestamp)}</div>
                             {entry.image && (
                                 <div className="diary-image-container" onClick={() => setFullScreenImage(entry.image)}>
                                     <img src={entry.image} alt="Memory" className="diary-image" />
@@ -171,6 +208,8 @@ const IshitaDiary = () => {
                         <form onSubmit={handleCodeSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
                             <input
                                 type="password"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
                                 className="pin-input"
                                 value={sheetCode}
                                 onChange={(e) => setSheetCode(e.target.value)}
@@ -207,7 +246,7 @@ const IshitaDiary = () => {
                             ) : (
                                 <>
                                     <ImageIcon size={48} style={{ marginBottom: '0.5rem' }} />
-                                    <span>Tap to add image (1:1 crop)</span>
+                                    <span>Tap to add image</span>
                                 </>
                             )}
                         </div>

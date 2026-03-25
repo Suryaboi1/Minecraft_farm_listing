@@ -1,11 +1,16 @@
 .diary-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   min-height: 100vh;
   background-color: #fff9fc;
   color: #333;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   padding-bottom: 100px;
-  position: relative;
   overflow-x: hidden;
+  z-index: 50;
+  /* Above index.css root layers */
 }
 
 .diary-header {
@@ -16,13 +21,11 @@
   backdrop-filter: blur(12px);
   padding: 1rem;
   border-bottom: 1px solid rgba(255, 105, 180, 0.2);
-  text-align: center;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.3s ease;
-}
-
-.diary-header:active {
-  background: rgba(255, 240, 245, 0.9);
+  min-height: 60px;
 }
 
 .diary-title {
@@ -37,6 +40,27 @@
   gap: 8px;
 }
 
+.exit-edit-btn {
+  position: absolute;
+  right: 1rem;
+  background: rgba(255, 105, 180, 0.1);
+  color: #ff69b4;
+  border: 1px solid rgba(255, 105, 180, 0.3);
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.exit-edit-btn:active {
+  background: rgba(255, 105, 180, 0.2);
+}
+
 .diary-content {
   padding: 1.5rem 1rem;
   max-width: 600px;
@@ -49,21 +73,27 @@
 .diary-card {
   background: white;
   border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(255, 105, 180, 0.08), 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 8px 24px rgba(255, 105, 180, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
 }
 
+.diary-time-badge {
+  font-size: 0.75rem;
+  color: #999;
+  padding: 0.75rem 1.25rem 0.25rem;
+  font-weight: 500;
+}
+
 .diary-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(255, 105, 180, 0.12), 0 4px 12px rgba(0,0,0,0.04);
+  box-shadow: 0 12px 32px rgba(255, 105, 180, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .diary-image-container {
   width: 100%;
-  aspect-ratio: 1 / 1;
   overflow: hidden;
   cursor: pointer;
   background: #f0f0f0;
@@ -71,9 +101,11 @@
 
 .diary-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  max-height: 600px;
+  object-fit: contain;
   transition: transform 0.5s ease;
+  display: block;
 }
 
 .diary-image-container:active .diary-image {
@@ -86,7 +118,6 @@
   line-height: 1.6;
   color: #444;
   white-space: pre-wrap;
-  border-top: 1px solid rgba(255, 105, 180, 0.1);
 }
 
 .diary-actions {
@@ -110,9 +141,17 @@
   transition: background 0.2s;
 }
 
-.action-btn.edit { color: #8a2be2; }
-.action-btn.delete { color: #ff4b4b; }
-.action-btn:active { background: rgba(0,0,0,0.05); }
+.action-btn.edit {
+  color: #8a2be2;
+}
+
+.action-btn.delete {
+  color: #ff4b4b;
+}
+
+.action-btn:active {
+  background: rgba(0, 0, 0, 0.05);
+}
 
 .diary-fab {
   position: fixed;
@@ -144,7 +183,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
   z-index: 100;
   opacity: 0;
@@ -160,7 +199,7 @@
   padding: 2rem 1.5rem 3rem;
   transform: translateY(100%);
   animation: slideUpSheet 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  box-shadow: 0 -8px 32px rgba(0,0,0,0.1);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .pin-input {
@@ -188,7 +227,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0, 0, 0, 0.9);
   z-index: 200;
   display: flex;
   align-items: center;
@@ -218,6 +257,7 @@
   flex-direction: column;
   animation: slideUpSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-header {
@@ -232,7 +272,8 @@
   z-index: 10;
 }
 
-.modal-close, .modal-save {
+.modal-close,
+.modal-save {
   background: transparent;
   border: none;
   padding: 0.5rem;
@@ -240,8 +281,14 @@
   font-weight: 600;
   cursor: pointer;
 }
-.modal-close { color: #888; }
-.modal-save { color: #ff69b4; }
+
+.modal-close {
+  color: #888;
+}
+
+.modal-save {
+  color: #ff69b4;
+}
 
 .modal-body {
   padding: 1.5rem;
@@ -252,7 +299,7 @@
 
 .image-upload-area {
   width: 100%;
-  aspect-ratio: 1/1;
+  min-height: 120px;
   background: #f9f9f9;
   border: 2px dashed #ffc0cb;
   border-radius: 20px;
@@ -265,10 +312,19 @@
   position: relative;
   transition: background 0.2s;
   color: #ff69b4;
+  padding: 1rem;
 }
 
-.image-upload-area:active { background: #fff0f5; }
-.image-upload-area img { width: 100%; height: 100%; object-fit: cover; }
+.image-upload-area:active {
+  background: #fff0f5;
+}
+
+.image-upload-area img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 300px;
+}
 
 .text-input-area {
   width: 100%;
@@ -282,26 +338,54 @@
   color: #333;
 }
 
+.text-input-area:focus {
+  outline: none;
+}
+
 .text-input-area::placeholder {
   color: #ccc;
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUpSheet {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
 }
 
 @keyframes scaleUp {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
