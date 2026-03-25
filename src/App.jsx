@@ -14,7 +14,7 @@ function App() {
         <Route path="/minecraft-lister" element={<HomePage />} />
         <Route path="/minecraft-lister/farm/:id" element={<FarmDetailPage />} />
         <Route path="/love-calculator" element={<LoveCalculator />} />
-        <Route path="/ishita-diary" element={<IshitaDiary />} />
+        <Route path="/ishita" element={<IshitaDiary />} />
       </Routes>
     </Router>
   );
