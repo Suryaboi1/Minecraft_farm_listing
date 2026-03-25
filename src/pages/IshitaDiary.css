@@ -1,0 +1,307 @@
+.diary-container {
+  min-height: 100vh;
+  background-color: #fff9fc;
+  color: #333;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding-bottom: 100px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.diary-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 105, 180, 0.2);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.diary-header:active {
+  background: rgba(255, 240, 245, 0.9);
+}
+
+.diary-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff69b4;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.diary-content {
+  padding: 1.5rem 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.diary-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(255, 105, 180, 0.08), 0 2px 8px rgba(0,0,0,0.04);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.diary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 105, 180, 0.12), 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.diary-image-container {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f0f0f0;
+}
+
+.diary-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.diary-image-container:active .diary-image {
+  transform: scale(0.98);
+}
+
+.diary-text {
+  padding: 1.25rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #444;
+  white-space: pre-wrap;
+  border-top: 1px solid rgba(255, 105, 180, 0.1);
+}
+
+.diary-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 250, 252, 1);
+  border-top: 1px solid rgba(255, 105, 180, 0.1);
+}
+
+.action-btn {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.action-btn.edit { color: #8a2be2; }
+.action-btn.delete { color: #ff4b4b; }
+.action-btn:active { background: rgba(0,0,0,0.05); }
+
+.diary-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #ff69b4, #ff1493);
+  color: white;
+  border: none;
+  box-shadow: 0 8px 24px rgba(255, 20, 147, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28), box-shadow 0.2s;
+  z-index: 40;
+}
+
+.diary-fab:active {
+  transform: scale(0.9);
+  box-shadow: 0 4px 12px rgba(255, 20, 147, 0.4);
+}
+
+.bottom-sheet-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.bottom-sheet {
+  background: white;
+  border-radius: 24px 24px 0 0;
+  padding: 2rem 1.5rem 3rem;
+  transform: translateY(100%);
+  animation: slideUpSheet 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.1);
+}
+
+.pin-input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 2rem;
+  letter-spacing: 0.5em;
+  text-align: center;
+  border: 2px solid #ffe4e1;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background: #fffafa;
+  color: #ff1493;
+}
+
+.pin-input:focus {
+  border-color: #ff69b4;
+}
+
+.full-image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeIn 0.2s forwards;
+  cursor: zoom-out;
+}
+
+.full-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform: scale(0.95);
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  animation: slideUpSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.modal-close, .modal-save {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.modal-close { color: #888; }
+.modal-save { color: #ff69b4; }
+
+.modal-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.image-upload-area {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: #f9f9f9;
+  border: 2px dashed #ffc0cb;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.2s;
+  color: #ff69b4;
+}
+
+.image-upload-area:active { background: #fff0f5; }
+.image-upload-area img { width: 100%; height: 100%; object-fit: cover; }
+
+.text-input-area {
+  width: 100%;
+  min-height: 150px;
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  resize: none;
+  background: transparent;
+  color: #333;
+}
+
+.text-input-area::placeholder {
+  color: #ccc;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpSheet {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
