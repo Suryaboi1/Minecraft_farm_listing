@@ -237,7 +237,7 @@ const LoveCalculator = () => {
                 <main>
                     <div className="love-titles">
                         <h1>Love calculator</h1>
-                        <h2>What future beholds</h2>
+                        <h1>What future beholds</h1>
                     </div>
                     <div className="love-form-section">
                         <div className="love-input-group">
