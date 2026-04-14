@@ -256,11 +256,9 @@ body.love-calc-active .app-container {
 
 .result-couple-names {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 24px;
-    /* Larger as requested */
+    font-size: 20px;
     font-weight: 500;
-    margin-top: -16px;
-    /* Aggressive negative margin to pull names closer */
+    margin-top: -4px;
     margin-bottom: 32px;
     letter-spacing: 0.5px;
     text-transform: capitalize;
