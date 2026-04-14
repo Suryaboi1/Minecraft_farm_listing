@@ -403,7 +403,7 @@ const LoveCalculator = () => {
                                 color: 'white', border: 'none', padding: '1.2rem', borderRadius: '16px',
                                 fontSize: '1.2rem', fontWeight: '900', cursor: isCalculating ? 'wait' : 'pointer',
                                 transition: 'all 0.3s ease', textTransform: 'uppercase',
-                                letterSpacing: '2px', boxShadow: is calculating? 'none': '0 10px 20px rgba(255, 75, 75, 0.4)',
+                                letterSpacing: '2px', boxShadow: isCalculating ? 'none' : '0 10px 20px rgba(255, 75, 75, 0.4)',
                                 transform: isCalculating ? 'scale(0.98)' : 'scale(1)'
                             }}>
                             {isCalculating ? 'Calculating...' : 'Calculate Love'}
