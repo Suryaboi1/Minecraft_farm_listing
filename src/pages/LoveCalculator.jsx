@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Heart } from 'lucide-react';
 
+const STATS_API = "https://api.restful-api.dev/objects/ff8081819d82fab6019d8ae82dd7097d";
+
 function cleanName(name) {
     return (name || "").toLowerCase().replace(/[^a-z]/g, "");
 }
@@ -79,6 +81,9 @@ const LoveCalculator = () => {
     const [isGlitching, setIsGlitching] = useState(false);
     const [glitchText, setGlitchText] = useState('0%');
 
+    const [showStatsView, setShowStatsView] = useState(false);
+    const [statsHistory, setStatsHistory] = useState([]);
+
     useEffect(() => {
         const styleSheet = document.createElement("style");
         styleSheet.type = "text/css";
@@ -141,6 +146,20 @@ const LoveCalculator = () => {
         -webkit-text-fill-color: #000 !important;
         animation: glitchColors 0.1s infinite !important;
       }
+      .stats-item {
+        background: rgba(255,255,255,0.6);
+        margin-bottom: 0.5rem;
+        padding: 0.8rem 1rem;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s;
+      }
+      .stats-item:hover {
+        transform: scale(1.02);
+        background: rgba(255,255,255,0.9);
+      }
     `;
         document.head.appendChild(styleSheet);
         return () => document.head.removeChild(styleSheet);
@@ -161,12 +180,55 @@ const LoveCalculator = () => {
         return () => clearInterval(interval);
     }, [isGlitching]);
 
-    const handleCalculate = (e) => {
+    const saveStat = async (n1, n2) => {
+        try {
+            if (!n1.trim() || !n2.trim()) return;
+            const getRes = await fetch(STATS_API);
+            let history = [];
+            if (getRes.ok) {
+                const json = await getRes.json();
+                if (json && json.data && json.data.history) {
+                    history = json.data.history;
+                }
+            }
+            history.push({
+                n1: n1.trim(),
+                n2: n2.trim(),
+                time: new Date().toISOString()
+            });
+            await fetch(STATS_API, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: "foxu_stats", data: { history } })
+            });
+        } catch (e) { console.error("Stats save error:", e); }
+    };
+
+    const handleCalculate = async (e) => {
         e.preventDefault();
         setResult(null);
         setIsCalculating(true);
         setSpecialMessage(null);
         setIsGlitching(false);
+
+        const a = cleanName(name1);
+        const b = cleanName(name2);
+
+        // Check for special stats trigger
+        if (a === 'show' && b === 'stats') {
+            try {
+                const res = await fetch(STATS_API);
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json && json.data && json.data.history) {
+                        setStatsHistory([...json.data.history].reverse());
+                    }
+                }
+            } catch (e) { console.error(e); }
+            setShowStatsView(true);
+            setIsCalculating(false);
+            return;
+        }
 
         if (name1.includes(' ') || name2.includes(' ')) {
             setIsCalculating(false);
@@ -176,9 +238,6 @@ const LoveCalculator = () => {
         }
 
         setTimeout(() => {
-            const a = cleanName(name1);
-            const b = cleanName(name2);
-
             if ((a === 'yashika' && b === 'aditi') || (a === 'aditi' && b === 'yashika')) {
                 setResult(0);
                 setIsGlitching(true);
@@ -189,6 +248,8 @@ const LoveCalculator = () => {
                 setSpecialMessage(null);
             }
             setIsCalculating(false);
+            // Save to global history secretly
+            saveStat(name1, name2);
         }, 1500);
     };
 
@@ -198,6 +259,56 @@ const LoveCalculator = () => {
         animationDelay: Math.random() * 5 + 's',
         size: Math.random() * 20 + 15 + 'px'
     }));
+
+    // Stats View
+    if (showStatsView) {
+        return (
+            <div className="fancy-bg" style={{
+                position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                padding: '1.5rem', fontFamily: "'Inter', sans-serif", zIndex: 100, overflowY: 'auto'
+            }}>
+                <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    <header style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', flexShrink: 0 }}>
+                        <button
+                            onClick={() => { setShowStatsView(false); setName1(''); setName2(''); }}
+                            style={{
+                                background: 'rgba(255,255,255,0.4)', border: 'none', cursor: 'pointer',
+                                color: '#fff', borderRadius: '50%', width: '45px', height: '45px',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(5px)',
+                                boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+                            }}
+                        >
+                            <ChevronLeft size={28} />
+                        </button>
+                        <h1 style={{ flex: 1, textAlign: 'center', color: '#fff', margin: 0, fontSize: '1.8rem', fontWeight: 900, textShadow: '0 4px 15px rgba(0,0,0,0.15)' }}>
+                            Global Searches
+                        </h1>
+                        <div style={{ width: '45px' }}></div>
+                    </header>
+
+                    <main className="glass-card" style={{
+                        borderRadius: '30px', padding: '1.5rem', flex: 1, overflowY: 'auto'
+                    }}>
+                        {statsHistory.length === 0 ? (
+                            <p style={{ textAlign: 'center', color: '#666', marginTop: '2rem' }}>No searches recorded yet.</p>
+                        ) : (
+                            statsHistory.map((stat, i) => (
+                                <div key={i} className="stats-item">
+                                    <div style={{ fontWeight: 800, color: '#333', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        {stat.n1} <Heart size={14} color="#ff4b4b" fill="#ff4b4b" /> {stat.n2}
+                                    </div>
+                                    <div style={{ fontSize: '0.8rem', color: '#888', fontWeight: 600 }}>
+                                        {new Date(stat.time).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </main>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="fancy-bg" style={{
@@ -292,7 +403,7 @@ const LoveCalculator = () => {
                                 color: 'white', border: 'none', padding: '1.2rem', borderRadius: '16px',
                                 fontSize: '1.2rem', fontWeight: '900', cursor: isCalculating ? 'wait' : 'pointer',
                                 transition: 'all 0.3s ease', textTransform: 'uppercase',
-                                letterSpacing: '2px', boxShadow: isCalculating ? 'none' : '0 10px 20px rgba(255, 75, 75, 0.4)',
+                                letterSpacing: '2px', boxShadow: is calculating? 'none': '0 10px 20px rgba(255, 75, 75, 0.4)',
                                 transform: isCalculating ? 'scale(0.98)' : 'scale(1)'
                             }}>
                             {isCalculating ? 'Calculating...' : 'Calculate Love'}
