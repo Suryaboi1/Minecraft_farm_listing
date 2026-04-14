@@ -192,11 +192,15 @@ const LoveCalculator = () => {
             names: `${yourName} & ${crushName}`,
             score: score,
             card: levelData.image.replace('.png', '').replace(/-/g, ' ').toUpperCase(),
-            device: navigator.platform
+            device: navigator.userAgent.includes('iPhone') ? 'iPhone' :
+                navigator.userAgent.includes('Android') ? 'Android' : 'Desktop'
         };
+
+        // Save locally and globally
         const updatedStats = [newStat, ...stats];
         setStats(updatedStats);
         localStorage.setItem('love_stats', JSON.stringify(updatedStats));
+        saveGlobalStat(newStat);
 
         setTimeout(() => {
             setResult(resultData);
