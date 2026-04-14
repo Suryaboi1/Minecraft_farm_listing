@@ -101,6 +101,14 @@ const LoveCalculator = () => {
         }
     }, [screen, result]);
 
+    // Global layout override
+    useEffect(() => {
+        document.body.classList.add('love-calc-active');
+        return () => {
+            document.body.classList.remove('love-calc-active');
+        };
+    }, []);
+
     const handleNameChange = (setter) => (e) => {
         const val = e.target.value.replace(/[^a-zA-Z]/g, '');
         setter(val);
