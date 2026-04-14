@@ -130,6 +130,7 @@ const LoveCalculator = () => {
         const b = name2.toLowerCase().trim();
 
         // 1. Direct Secret Overrides (Highest Priority)
+        if ((a === "aditi" && b === "pista") || (a === "pista" && b === "aditi")) return 0;
         if (a === "prashant" && b === "kavya") return 97;
         if (a === "kavya" && b === "prashant") return 99;
 
@@ -208,7 +209,13 @@ const LoveCalculator = () => {
             }
         }
 
-        const message = levelData.messages[Math.floor(Math.random() * levelData.messages.length)];
+        let message = levelData.messages[Math.floor(Math.random() * levelData.messages.length)];
+
+        // Special Message Overrides
+        if ((yName === "aditi" && cName === "pista") || (yName === "pista" && cName === "aditi")) {
+            message = "Aap dono to behen hi ban jao!";
+        }
+
         const resultData = { score, message, image: levelData.image };
 
         // Preload Image immediately
