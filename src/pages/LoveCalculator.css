@@ -293,6 +293,23 @@ body.love-calc-active .app-container {
     border-radius: 16px;
     margin-bottom: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    color: #3C3B52;
+    /* Ensure default text is dark */
+}
+
+.love-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.love-stat-row .label {
+    font-weight: 600;
+    color: #8583A5;
+    /* Subtitle color */
+    margin-right: 10px;
 }
 
 /* Floating Hearts */
