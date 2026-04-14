@@ -247,26 +247,19 @@ body.love-calc-active .app-container {
 .percentage {
     font-family: 'Varela Round', sans-serif;
     font-size: 72px;
-    margin: 0 0 4px 0;
-    /* Tighten gap */
+    margin: 0;
     color: white;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .result-couple-names {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
     font-weight: 500;
-    margin-bottom: 24px;
+    margin-top: -8px;
+    margin-bottom: 32px;
     letter-spacing: 0.5px;
     text-transform: capitalize;
-}
-
-.heart-text {
-    color: #FF4D4D;
-    /* Red heart symbol */
-    margin: 0 4px;
-    font-weight: 700;
 }
 
 .tarot-card-container {
