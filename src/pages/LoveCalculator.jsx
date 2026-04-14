@@ -187,6 +187,10 @@ const LoveCalculator = () => {
         const message = levelData.messages[Math.floor(Math.random() * levelData.messages.length)];
         const resultData = { score, message, image: levelData.image };
 
+        // Preload Image immediately
+        const img = new Image();
+        img.src = `/assets/tarots/${levelData.image}`;
+
         // Save stat
         const newStat = {
             date: new Date().toLocaleString(),
