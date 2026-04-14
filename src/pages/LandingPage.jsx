@@ -14,19 +14,29 @@ const LandingPage = () => {
                 <p className="text-secondary mt-1" style={{ fontSize: '1.2rem' }}>Your gaming companion hub</p>
             </header>
 
-            <main style={{ width: '100%', maxWidth: '800px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            <main style={{ width: '100%', maxWidth: '900px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem', padding: '1rem' }}>
                 {/* Card 1: Minecraft Farm Lister */}
                 <div
                     className="farm-card"
                     onClick={() => navigate('/minecraft-lister')}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '2.5rem 1.5rem', cursor: 'pointer' }}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        textAlign: 'center',
+                        padding: '3rem 2rem',
+                        cursor: 'pointer',
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
                 >
-                    <div style={{ backgroundColor: 'rgba(0, 230, 118, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
-                        <Pickaxe size={48} color="var(--primary-color)" />
+                    <div style={{ backgroundColor: 'rgba(0, 230, 118, 0.15)', padding: '1.2rem', borderRadius: '24px', marginBottom: '1.5rem', boxShadow: '0 8px 16px rgba(0, 230, 118, 0.1)' }}>
+                        <Pickaxe size={56} color="#00e676" />
                     </div>
                     <div className="farm-card-content">
-                        <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Minecraft Farm Lister</h2>
-                        <p style={{ justifyContent: 'center' }}>Manage your mob and resource farms</p>
+                        <h2 style={{ fontSize: '1.75rem', marginBottom: '0.75rem', fontWeight: '700' }}>Minecraft Farm Lister</h2>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Efficiently manage your farms and resources with our item-aware lister.</p>
                     </div>
                 </div>
 
@@ -34,14 +44,24 @@ const LandingPage = () => {
                 <div
                     className="farm-card"
                     onClick={() => navigate('/love-calculator')}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '2.5rem 1.5rem', cursor: 'pointer' }}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        textAlign: 'center',
+                        padding: '3rem 2rem',
+                        cursor: 'pointer',
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
                 >
-                    <div style={{ backgroundColor: 'rgba(255, 75, 75, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
-                        <Heart size={48} color="#ff4b4b" />
+                    <div style={{ backgroundColor: 'rgba(255, 75, 75, 0.15)', padding: '1.2rem', borderRadius: '24px', marginBottom: '1.5rem', boxShadow: '0 8px 16px rgba(255, 75, 75, 0.1)' }}>
+                        <Heart size={56} color="#ff4b4b" />
                     </div>
                     <div className="farm-card-content">
-                        <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Love Calculator</h2>
-                        <p style={{ justifyContent: 'center' }}>Test your compatibility score</p>
+                        <h2 style={{ fontSize: '1.75rem', marginBottom: '0.75rem', fontWeight: '700' }}>Love Calculator &lt;3</h2>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Discover your cosmic compatibility using our advanced algorithm.</p>
                     </div>
                 </div>
             </main>
