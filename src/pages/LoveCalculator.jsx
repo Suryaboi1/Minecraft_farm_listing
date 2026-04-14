@@ -150,6 +150,14 @@ const LoveCalculator = () => {
             return 96;
         }
 
+        if (a === "prashant" && b === "kavya") {
+            return 97;
+        }
+
+        if (a === "kavya" && b === "prashant") {
+            return 99;
+        }
+
         const combined = `A:${a}|B:${b}|LOVE:v1`;
         let hash = 0;
 
