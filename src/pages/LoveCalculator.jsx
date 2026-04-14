@@ -125,37 +125,25 @@ const LoveCalculator = () => {
         setter(val);
     };
 
-    const calculateLoveScore = (yourName, crushName) => {
-        if (!yourName || !crushName) throw new Error("Both names are required.");
-        if (yourName.includes(" ") || crushName.includes(" ")) {
+    const calculateLoveScore = (name1, name2) => {
+        const a = name1.toLowerCase().trim();
+        const b = name2.toLowerCase().trim();
+
+        // 1. Direct Secret Overrides (Highest Priority)
+        if (a === "prashant" && b === "kavya") return 97;
+        if (a === "kavya" && b === "prashant") return 99;
+
+        if ((a === "naina" && b === "surya") || (a === "surya" && b === "naina")) return 90;
+        if ((a === "naina" && b === "suryakant") || (a === "suryakant" && b === "naina")) return 92;
+        if ((a === "naina" && b === "arjun") || (a === "arjun" && b === "naina")) return 96;
+
+        // 2. Validation
+        if (!a || !b) throw new Error("Both names are required.");
+        if (name1.includes(" ") || name2.includes(" ")) {
             throw new Error("Only first names are allowed.");
         }
-
-        const a = yourName.trim().toLowerCase();
-        const b = crushName.trim().toLowerCase();
-
         if (!/^[a-z]+$/.test(a) || !/^[a-z]+$/.test(b)) {
             throw new Error("Names must contain letters only.");
-        }
-
-        if ((a === "naina" && b === "surya") || (a === "surya" && b === "naina")) {
-            return 90;
-        }
-
-        if ((a === "naina" && b === "suryakant") || (a === "suryakant" && b === "naina")) {
-            return 92;
-        }
-
-        if ((a === "naina" && b === "arjun") || (a === "arjun" && b === "naina")) {
-            return 96;
-        }
-
-        if (a === "prashant" && b === "kavya") {
-            return 97;
-        }
-
-        if (a === "kavya" && b === "prashant") {
-            return 99;
         }
 
         const combined = `A:${a}|B:${b}|LOVE:v1`;
