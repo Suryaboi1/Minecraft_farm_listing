@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useRef } from 'react';
 import './LoveCalculator.css';
 import { saveGlobalStat, fetchGlobalStats } from './db';
 
