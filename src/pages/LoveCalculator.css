@@ -140,10 +140,15 @@ body.love-calc-active .app-container {
     background-color: white;
     outline: none;
     box-sizing: border-box;
+    transition: border-color 0.2s;
 }
 
 .love-input-group input:focus {
     border-color: #5E57B4;
+}
+
+.love-input-group input::placeholder {
+    color: #C9C8D4;
 }
 
 .love-spacer {
@@ -230,43 +235,49 @@ body.love-calc-active .app-container {
     height: calc(100% - 64px);
     /* Account for header */
     box-sizing: border-box;
+    justify-content: flex-start;
+    /* User requested push up */
+    padding-top: 24px;
+    /* Move everything a bit higher */
 }
 
 .result-center-group {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    /* Support push up */
     align-items: center;
 }
 
 .percentage {
     font-family: 'Varela Round', sans-serif;
-    font-size: 72px;
-    /* User requested smaller percentage */
-    margin: 0 0 12px 0;
-    /* Reduced gap */
+    font-size: 88px;
+    /* Slightly adjusted back from 72px */
+    margin: 0 0 16px 0;
     color: white;
 }
 
 .tarot-card-container {
-    margin-bottom: 16px;
-    /* Reduced gap */
+    margin-bottom: 24px;
 }
 
 .result-tarot-card {
-    width: 180px;
-    /* User requested smaller card size */
-    max-height: 340px;
-    border-radius: 16px;
-    box-shadow: 0px 8px 100px rgba(0, 0, 0, 0.3);
+    width: 210px;
+    /* User requested larger as before */
+    max-height: 380px;
+    border-radius: 20px;
+    box-shadow: 0px 8px 100px rgba(0, 0, 0, 0.4);
+    object-fit: cover;
 }
 
 .result-text {
     font-size: 20px;
     text-align: center;
     color: white;
-    line-height: 1.3;
+    line-height: 1.35;
+    padding-bottom: 40px;
+    /* Buffer for visibility */
 }
 
 /* Stats */

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
 import './LoveCalculator.css';
+import { saveGlobalStat, fetchGlobalStats } from './db';
 
 const tarotLevels = [
     { max: 4, image: "the-tower.png", messages: ["Yeh connection intense hai, but stable feel nahi hota.", "Dynamics thode unpredictable lag rahe hain.", "Yeh type ka bond usually shake karta hai before it settles.", "Strong reactions, but not always smooth."] },
@@ -69,8 +69,16 @@ const LoveCalculator = () => {
 
     // Load stats on mount
     useEffect(() => {
-        const savedStats = JSON.parse(localStorage.getItem('love_stats') || "[]");
-        setStats(savedStats);
+        const loadStats = async () => {
+            const globalRes = await fetchGlobalStats();
+            if (globalRes && Array.isArray(globalRes)) {
+                setStats(globalRes);
+            } else {
+                const local = JSON.parse(localStorage.getItem('love_stats') || "[]");
+                setStats(local);
+            }
+        };
+        loadStats();
     }, []);
 
     // Loading dots animation
