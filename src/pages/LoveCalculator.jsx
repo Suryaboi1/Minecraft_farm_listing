@@ -100,6 +100,10 @@ const LoveCalculator = () => {
     useEffect(() => {
         if (screen === 3 && result !== null) {
             let current = 0;
+            if (result.score === -1) {
+                setDisplayPercentage("-∞");
+                return;
+            }
             const stepTime = Math.max(10, Math.floor(1500 / result.score));
             const interval = setInterval(() => {
                 current += 1;
@@ -130,7 +134,7 @@ const LoveCalculator = () => {
         const b = name2.toLowerCase().trim();
 
         // 1. Direct Secret Overrides (Highest Priority)
-        if ((a === "aditi" && b === "pista") || (a === "pista" && b === "aditi")) return 0;
+        if ((a === "aditi" && b === "pista") || (a === "pista" && b === "aditi")) return -1;
         if (a === "prashant" && b === "kavya") return 97;
         if (a === "kavya" && b === "prashant") return 99;
 
