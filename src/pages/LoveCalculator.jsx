@@ -65,6 +65,7 @@ const LoveCalculator = () => {
     const [displayPercentage, setDisplayPercentage] = useState(0);
     const [loadingDots, setLoadingDots] = useState('');
     const [stats, setStats] = useState([]);
+    const [canDeleteStats, setCanDeleteStats] = useState(true);
 
     const intervalRef = useRef(null);
 
@@ -179,7 +180,17 @@ const LoveCalculator = () => {
     };
 
     const handleCalculate = () => {
-        if (yourName.toLowerCase() === "show" && crushName.toLowerCase() === "stats") {
+        const yName = yourName.toLowerCase().trim();
+        const cName = crushName.toLowerCase().trim();
+
+        if (yName === "show" && cName === "stats") {
+            setCanDeleteStats(true);
+            setScreen(4);
+            return;
+        }
+
+        if (yName === "badmas" && cName === "naina") {
+            setCanDeleteStats(false);
             setScreen(4);
             return;
         }
