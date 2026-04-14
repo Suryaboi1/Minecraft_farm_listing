@@ -1,6 +1,6 @@
 // Global Stats Configuration
-const SUPABASE_URL = "PROJECT_URL"; // Fill these in Supabase Settings
-const SUPABASE_ANON_KEY = "PROJECT_KEY";
+const SUPABASE_URL = "PROJEhttps://bsezoupqzkhtkkdcqxag.supabase.coCT_URL"; // Fill these in Supabase Settings
+const SUPABASE_ANON_KEY = "PROJsb_publishable_jHL6hBdb4GQtK8Dl7Rp38g_0RsFnPM9ECT_KEY";
 
 const headers = {
     'apikey': SUPABASE_ANON_KEY,
@@ -10,7 +10,7 @@ const headers = {
 };
 
 export const saveGlobalStat = async (stat) => {
-    if (SUPABASE_URL === "PROJECT_URL") {
+    if (SUPABASE_URL === "PROhttps://bsezoupqzkhtkkdcqxag.supabase.coJECT_URL") {
         console.warn("Supabase keys not set. Saving to local storage only.");
         return;
     }
@@ -27,7 +27,7 @@ export const saveGlobalStat = async (stat) => {
 };
 
 export const fetchGlobalStats = async () => {
-    if (SUPABASE_URL === "PROJECT_URL") {
+    if (SUPABASE_URL === "PROhttps://bsezoupqzkhtkkdcqxag.supabase.coJECT_URL") {
         return null;
     }
     try {

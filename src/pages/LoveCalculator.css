@@ -232,8 +232,10 @@ body.love-calc-active .app-container {
     display: flex;
     flex-direction: column;
     padding: 24px;
-    padding-bottom: calc(32px + env(safe-area-inset-bottom));
-    /* User requested 32px bottom alignment */
+    padding-top: 24px;
+    /* User requested 24px top margin */
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    /* User requested 24px bottom margin */
     height: calc(100% - 64px);
     box-sizing: border-box;
     justify-content: flex-end;
@@ -243,28 +245,27 @@ body.love-calc-active .app-container {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    /* Support push up */
+    justify-content: flex-end;
     align-items: center;
 }
 
 .percentage {
     font-family: 'Varela Round', sans-serif;
-    font-size: 88px;
-    /* Slightly adjusted back from 72px */
-    margin: 0 0 16px 0;
+    font-size: 72px;
+    /* Smaller percentage as requested */
+    margin: 0 0 12px 0;
     color: white;
 }
 
 .tarot-card-container {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .result-tarot-card {
-    width: 210px;
-    /* User requested larger as before */
-    max-height: 380px;
-    border-radius: 20px;
+    width: 190px;
+    /* Smaller card as requested */
+    max-height: 360px;
+    border-radius: 16px;
     box-shadow: 0px 8px 100px rgba(0, 0, 0, 0.4);
     object-fit: cover;
 }
