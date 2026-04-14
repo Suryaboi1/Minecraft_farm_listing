@@ -136,10 +136,11 @@ const LoveCalculator = () => {
             throw new Error("Names must contain letters only.");
         }
 
-        if (
-            (a === "naina" && b === "surya") ||
-            (a === "surya" && b === "naina")
-        ) {
+        if ((a === "naina" && b === "surya") || (a === "surya" && b === "naina")) {
+            return 90;
+        }
+
+        if ((a === "naina" && b === "suryakant") || (a === "suryakant" && b === "naina")) {
             return 92;
         }
 
@@ -158,7 +159,7 @@ const LoveCalculator = () => {
         let score = hash % 101;
 
         if (a === "naina" || b === "naina") {
-            score = Math.min(score, 92);
+            score = Math.min(score, 90);
         }
 
         return score;
