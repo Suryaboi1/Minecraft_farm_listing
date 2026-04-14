@@ -229,20 +229,18 @@ body.love-calc-active .app-container {
     display: flex;
     flex-direction: column;
     padding: 24px;
-    padding-top: 24px;
-    /* User requested 24px top margin */
-    padding-bottom: calc(24px + env(safe-area-inset-bottom));
-    /* User requested 24px bottom margin */
     height: calc(100% - 64px);
     box-sizing: border-box;
-    justify-content: flex-end;
+    justify-content: center;
+    /* AALO: Center align */
 }
 
 .result-center-group {
-    flex-grow: 1;
+    flex-grow: 0;
+    /* Don't grow, just stay centered */
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
 }
 
