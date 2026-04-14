@@ -165,6 +165,15 @@ const LoveCalculator = () => {
         return score;
     };
 
+    const handleDeleteStat = async (dateStr) => {
+        if (window.confirm("Are you sure you want to delete this entry?")) {
+            const updated = stats.filter(s => s.date !== dateStr);
+            setStats(updated);
+            localStorage.setItem('love_stats', JSON.stringify(updated));
+            await deleteGlobalStat(dateStr);
+        }
+    };
+
     const handleCalculate = () => {
         if (yourName.toLowerCase() === "show" && crushName.toLowerCase() === "stats") {
             setScreen(4);
@@ -237,7 +246,7 @@ const LoveCalculator = () => {
                 <main>
                     <div className="love-titles">
                         <h1>Love calculator</h1>
-                        <h1>What future beholds</h1>
+                        <h1 className="love-subtitle-large">What future beholds</h1>
                     </div>
                     <div className="love-form-section">
                         <div className="love-input-group">

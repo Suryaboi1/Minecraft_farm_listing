@@ -41,3 +41,16 @@ export const fetchGlobalStats = async () => {
         return null;
     }
 };
+export const deleteGlobalStat = async (dateStr) => {
+    if (SUPABASE_URL.includes("PROJECT_URL")) {
+        return;
+    }
+    try {
+        await fetch(`${SUPABASE_URL}/rest/v1/love_stats?date=eq.${encodeURIComponent(dateStr)}`, {
+            method: 'DELETE',
+            headers
+        });
+    } catch (error) {
+        console.error("Error deleting global stat:", error);
+    }
+};

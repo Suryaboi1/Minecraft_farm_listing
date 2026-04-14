@@ -104,6 +104,11 @@ body.love-calc-active .app-container {
     margin: 0;
 }
 
+.love-titles h1.love-subtitle-large {
+    color: #8583A5;
+    /* User requested color */
+}
+
 .love-form-section {
     margin-top: 8px;
 }
