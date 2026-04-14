@@ -97,19 +97,11 @@ body.love-calc-active .app-container {
 .love-titles h1 {
     color: #5E57B4;
     font-family: 'Varela Round', sans-serif;
-    font-size: 36px;
+    font-size: 32px;
+    /* Balanced size for two lines */
     font-weight: normal;
-    line-height: 1.2;
+    line-height: 1.1;
     margin: 0;
-}
-
-.love-titles h2 {
-    color: #8583A5;
-    font-family: 'Varela Round', sans-serif;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 1.2;
-    margin: 4px 0 0 0;
 }
 
 .love-form-section {

@@ -240,7 +240,6 @@ const LoveCalculator = () => {
                         <h2>What future beholds</h2>
                     </div>
                     <div className="love-form-section">
-                        <h3 className="love-section-title">LET'S GET STARTED</h3>
                         <div className="love-input-group">
                             <input type="text" placeholder="Your name" value={yourName} onChange={handleNameChange(setYourName)} maxLength="20" />
                         </div>
