@@ -250,13 +250,17 @@ body.love-calc-active .app-container {
     margin: 0;
     color: white;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    line-height: 1;
+    /* Tighten line height to reduce implicit gaps */
 }
 
 .result-couple-names {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 18px;
+    font-size: 24px;
+    /* Larger as requested */
     font-weight: 500;
-    margin-top: -8px;
+    margin-top: -16px;
+    /* Aggressive negative margin to pull names closer */
     margin-bottom: 32px;
     letter-spacing: 0.5px;
     text-transform: capitalize;
