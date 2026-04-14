@@ -231,14 +231,11 @@ body.love-calc-active .app-container {
 .result-content {
     display: flex;
     flex-direction: column;
-    padding: 0 24px 24px 24px;
+    padding: 64px 24px 24px 24px;
+    /* User requested 64px top margin */
     height: calc(100% - 64px);
-    /* Account for header */
     box-sizing: border-box;
     justify-content: flex-start;
-    /* User requested push up */
-    padding-top: 24px;
-    /* Move everything a bit higher */
 }
 
 .result-center-group {
