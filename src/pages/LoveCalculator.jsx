@@ -292,6 +292,7 @@ const LoveCalculator = () => {
                 <div className="result-content">
                     <div className="result-center-group">
                         <h1 className="percentage">{displayPercentage}%</h1>
+                        <div className="result-couple-names">{yourName} <span className="heart-text">&lt;3</span> {crushName}</div>
                         <div className="tarot-card-container">
                             {result && (
                                 <img
