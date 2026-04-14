@@ -231,12 +231,14 @@ const LoveCalculator = () => {
                         </div>
                     </div>
                     <div className="love-spacer"></div>
-                    <div className="love-disclaimer">
-                        <p>Love Calculator™ doesn't guess, it calculates. Using the movements of the Sun and Moon and an ancient god-script hidden from mortals, it delivers results with terrifying precision.</p>
-                        <p>It was reportedly coded after consuming powdered unicorn horn and the blood of Cupid's right little toe.</p>
-                        <p>Proceed only if you're brave enough to know the truth.</p>
+                    <div className="cta-container">
+                        <div className="love-disclaimer">
+                            <p>Love Calculator™ doesn't guess, it calculates. Using the movements of the Sun and Moon and an ancient god-script hidden from mortals, it delivers results with terrifying precision.</p>
+                            <p>It was reportedly coded after consuming powdered unicorn horn and the blood of Cupid's right little toe.</p>
+                            <p>Proceed only if you're brave enough to know the truth.</p>
+                        </div>
+                        <button className="love-cta-button" onClick={handleCalculate}>CALCULATE</button>
                     </div>
-                    <button className="love-cta-button" onClick={handleCalculate}>CALCULATE</button>
                 </main>
             </div>
 
@@ -254,6 +256,13 @@ const LoveCalculator = () => {
             {/* Screen 3: Result */}
             <div className={`love-screen result-screen-bg ${screen === 3 ? 'active' : ''}`}>
                 <FloatingHearts />
+                <header className="love-header">
+                    <button className="back-icon-btn" onClick={handleRestart}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
+                </header>
                 <div className="result-content">
                     <div className="result-center-group">
                         <h1 className="percentage">{displayPercentage}%</h1>
@@ -268,7 +277,6 @@ const LoveCalculator = () => {
                         </div>
                         <p className="result-text">{result?.message}</p>
                     </div>
-                    <button className="restart-button" onClick={handleRestart}>RESTART</button>
                 </div>
             </div>
 
