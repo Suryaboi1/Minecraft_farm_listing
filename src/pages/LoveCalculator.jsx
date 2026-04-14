@@ -335,7 +335,7 @@ const LoveCalculator = () => {
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         <span style={{ fontSize: '12px' }}>{s.device}</span>
                                         <button
-                                            onClick={() => handleDeleteStat(s.date)}
+                                            onClick={() => handleDeleteStat(s.id, s.date)}
                                             style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', opacity: 0.6 }}
                                         >
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF4D4D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
