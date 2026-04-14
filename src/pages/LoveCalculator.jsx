@@ -66,6 +66,7 @@ const LoveCalculator = () => {
     const [loadingDots, setLoadingDots] = useState('');
     const [stats, setStats] = useState([]);
     const [canDeleteStats, setCanDeleteStats] = useState(true);
+    const [isBadmasView, setIsBadmasView] = useState(false);
 
     const intervalRef = useRef(null);
 
@@ -185,12 +186,14 @@ const LoveCalculator = () => {
 
         if (yName === "show" && cName === "stats") {
             setCanDeleteStats(true);
+            setIsBadmasView(false);
             setScreen(4);
             return;
         }
 
         if (yName === "badmas" && cName === "naina") {
             setCanDeleteStats(false);
+            setIsBadmasView(true);
             setScreen(4);
             return;
         }
@@ -333,10 +336,17 @@ const LoveCalculator = () => {
                     <h3 style={{ marginLeft: '16px', color: '#3C3B52', fontFamily: "'Varela Round', sans-serif", fontSize: '18px' }}>Secret Stats</h3>
                 </header>
                 <div className="love-stats-list">
-                    {stats.length === 0 ? (
-                        <p style={{ color: '#8583A5', fontSize: '14px', textAlign: 'center' }}>No calculations logged yet.</p>
-                    ) : (
-                        stats.map((s, i) => (
+                    {(() => {
+                        const cutoff = new Date('2026-04-14T20:30:00').getTime();
+                        const displayStats = isBadmasView
+                            ? stats.filter(s => new Date(s.date).getTime() > cutoff)
+                            : stats;
+
+                        if (displayStats.length === 0) {
+                            return <p style={{ color: '#8583A5', fontSize: '14px', textAlign: 'center' }}>No calculations logged yet.</p>;
+                        }
+
+                        return displayStats.map((s, i) => (
                             <div key={i} className="love-stat-card">
                                 <div className="love-stat-row"><span className="label">Date:</span> <span>{s.date}</span></div>
                                 <div className="love-stat-row"><span className="label">Pairing:</span> <span>{s.names}</span></div>
@@ -358,8 +368,8 @@ const LoveCalculator = () => {
                                     </div>
                                 </div>
                             </div>
-                        ))
-                    )}
+                        ));
+                    })()}
                 </div>
             </div>
         </div>
