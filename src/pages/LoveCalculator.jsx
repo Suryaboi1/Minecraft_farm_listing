@@ -230,10 +230,18 @@ const LoveCalculator = () => {
         };
 
         // Save locally and globally
-        const updatedStats = [newStat, ...stats];
-        setStats(updatedStats);
-        localStorage.setItem('love_stats', JSON.stringify(updatedStats));
-        saveGlobalStat(newStat);
+        const saveProcess = async () => {
+            const savedStat = await saveGlobalStat(newStat);
+            // If saved successfully, update the locally tracked stat with the DB ID
+            if (savedStat && (savedStat.id || (Array.isArray(savedStat) && savedStat[0]?.id))) {
+                const finalStat = Array.isArray(savedStat) ? savedStat[0] : savedStat;
+                setStats(prev => [finalStat, ...prev.filter(s => s.date !== finalStat.date)]);
+            } else {
+                setStats(prev => [newStat, ...prev]);
+            }
+            localStorage.setItem('love_stats', JSON.stringify([newStat, ...stats]));
+        };
+        saveProcess();
 
         setTimeout(() => {
             setResult(resultData);
