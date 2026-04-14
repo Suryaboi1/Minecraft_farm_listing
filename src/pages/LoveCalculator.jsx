@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Heart } from 'lucide-react';
+import { ChevronLeft, Heart, Sparkles, Star } from 'lucide-react';
 
 const STATS_API = "https://api.restful-api.dev/objects/ff8081819d82fab6019d8ae82dd7097d";
 
@@ -93,72 +93,160 @@ const LoveCalculator = () => {
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
       }
-      @keyframes floatHeart {
-        0% { transform: translateY(0px) scale(1) rotate(0deg); opacity: 0; }
+      @keyframes floatParticle {
+        0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0; }
         20% { opacity: 0.8; }
-        100% { transform: translateY(-100vh) scale(1.5) rotate(45deg); opacity: 0; }
+        100% { transform: translateY(-100vh) translateX(50px) rotate(180deg); opacity: 0; }
       }
-      @keyframes slideUpFade {
-        from { transform: translateY(30px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+      @keyframes floatY {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
       }
-      @keyframes glitchEffect {
-        0% { transform: translate(0) }
-        20% { transform: translate(-3px, 3px) }
-        40% { transform: translate(-3px, -3px) }
-        60% { transform: translate(3px, 3px) }
-        80% { transform: translate(3px, -3px) }
-        100% { transform: translate(0) }
+      @keyframes pulseHeart {
+        0% { transform: scale(1); filter: drop-shadow(0 15px 25px rgba(255, 75, 75, 0.4)); }
+        15% { transform: scale(1.1); filter: drop-shadow(0 20px 35px rgba(255, 75, 75, 0.6)); }
+        30% { transform: scale(1); filter: drop-shadow(0 15px 25px rgba(255, 75, 75, 0.4)); }
+        45% { transform: scale(1.1); filter: drop-shadow(0 20px 35px rgba(255, 75, 75, 0.6)); }
+        60% { transform: scale(1); filter: drop-shadow(0 15px 25px rgba(255, 75, 75, 0.4)); }
+        100% { transform: scale(1); filter: drop-shadow(0 15px 25px rgba(255, 75, 75, 0.4)); }
       }
-      @keyframes glitchColors {
-        0% { text-shadow: 3px 0 red, -3px 0 cyan; }
-        25% { text-shadow: -3px 0 red, 3px 0 cyan; }
-        50% { text-shadow: 3px 3px red, -3px -3px cyan; }
-        75% { text-shadow: -3px -3px red, 3px 3px cyan; }
-        100% { text-shadow: 3px 0 red, -3px 0 cyan; }
+      @keyframes popIn {
+        0% { opacity: 0; transform: scale(0.6) translateY(30px); }
+        70% { transform: scale(1.05) translateY(-5px); opacity: 1; }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
       }
-      .fancy-bg {
-        background: linear-gradient(-45deg, #ff9a9e, #fecfef, #fbc2eb, #a18cd1);
+      @keyframes fadeOutForm {
+        to { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+      }
+      @keyframes brokenHeartShake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px) rotate(-5deg); }
+        75% { transform: translateX(5px) rotate(5deg); }
+      }
+      .super-cute-bg {
+        background: linear-gradient(-45deg, #FFD1D1, #FFE3E1, #FFF5E4, #FFB6B9);
         background-size: 400% 400%;
         animation: gradientBG 15s ease infinite;
       }
-      .glass-card {
-        background: rgba(255, 255, 255, 0.75);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      .cute-glass {
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        border-radius: 40px;
+        box-shadow: 0 25px 50px rgba(255, 182, 185, 0.25), inset 0 0 20px rgba(255,255,255,0.5);
       }
-      .custom-input {
-        box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+      .cute-input {
+        background: rgba(255, 255, 255, 0.95);
+        border: 3px solid transparent;
+        border-radius: 30px;
+        padding: 1.4rem 1.5rem;
+        font-size: 1.3rem;
+        text-align: center;
+        font-weight: 800;
+        color: #ff6f91;
+        box-shadow: 0 8px 20px rgba(255, 182, 185, 0.2);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        width: 100%;
+        box-sizing: border-box;
       }
-      .custom-input:focus {
-        border-color: #ff4b4b !important;
-        box-shadow: 0 0 0 4px rgba(255, 75, 75, 0.15), inset 0 2px 5px rgba(0,0,0,0.02) !important;
-        background-color: #fff !important;
+      .cute-input:focus {
+        outline: none;
+        border-color: #ff9a9e;
+        transform: scale(1.03);
+        box-shadow: 0 12px 25px rgba(255, 154, 158, 0.4);
       }
-      .glitching-container {
-        animation: glitchEffect 0.2s infinite;
+      .cute-input::placeholder { color: #fabbc1; font-weight: 600; }
+      .input-badge {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        border: 2px solid #ff9a9e;
+        color: #ff6f91;
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 10px rgba(255,154,158,0.2);
+        z-index: 5;
       }
-      .glitching-text {
-        color: #000 !important;
-        background: none !important;
-        -webkit-text-fill-color: #000 !important;
-        animation: glitchColors 0.1s infinite !important;
-      }
-      .stats-item {
-        background: rgba(255,255,255,0.6);
-        margin-bottom: 0.5rem;
-        padding: 0.8rem 1rem;
-        border-radius: 12px;
+      .cute-btn {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        color: #d11a2a;
+        border: none;
+        padding: 1.4rem;
+        border-radius: 30px;
+        font-size: 1.4rem;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(255, 154, 158, 0.5);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        width: 100%;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        transition: transform 0.2s;
+        justify-content: center;
+        gap: 10px;
+        animation: floatY 3s ease-in-out infinite;
+        position: relative;
+        overflow: hidden;
       }
-      .stats-item:hover {
-        transform: scale(1.02);
-        background: rgba(255,255,255,0.9);
+      .cute-btn::after {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+        transition: all 0.5s;
+      }
+      .cute-btn:hover {
+        transform: scale(1.05) translateY(-5px);
+        box-shadow: 0 15px 30px rgba(255, 154, 158, 0.6);
+      }
+      .cute-btn:hover::after {
+        left: 100%;
+      }
+      .cute-btn:active { transform: scale(0.95); }
+      
+      .big-result-heart {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulseHeart 2s infinite;
+        margin: 0 auto;
+      }
+      .result-text {
+        position: relative;
+        z-index: 10;
+        font-size: 5rem;
+        font-weight: 900;
+        color: white;
+        text-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+      }
+      .cute-message {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #ff4b4b;
+        text-align: center;
+        background: rgba(255,255,255,0.85);
+        padding: 1.2rem 2.5rem;
+        border-radius: 30px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2);
+        animation: popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        margin-top: 2rem;
+      }
+      .broken-heart-effect {
+        animation: brokenHeartShake 0.5s infinite;
+        filter: grayscale(0.5);
       }
     `;
         document.head.appendChild(styleSheet);
@@ -169,13 +257,13 @@ const LoveCalculator = () => {
         let interval;
         if (isGlitching) {
             interval = setInterval(() => {
-                const chars = '!<>-_\\\\/[]{}—=+*^?#_0123456789';
+                const chars = '!💔<>-_\\\\/[]{}—=+*^?#_0123456789';
                 let str = '';
                 for (let i = 0; i < 4; i++) {
                     str += chars[Math.floor(Math.random() * chars.length)];
                 }
                 setGlitchText(str + '%');
-            }, 50);
+            }, 80);
         }
         return () => clearInterval(interval);
     }, [isGlitching]);
@@ -206,16 +294,12 @@ const LoveCalculator = () => {
 
     const handleCalculate = async (e) => {
         e.preventDefault();
-        setResult(null);
-        setIsCalculating(true);
-        setSpecialMessage(null);
-        setIsGlitching(false);
 
         const a = cleanName(name1);
         const b = cleanName(name2);
 
-        // Check for special stats trigger
         if (a === 'show' && b === 'stats') {
+            setIsCalculating(true);
             try {
                 const res = await fetch(STATS_API);
                 if (res.ok) {
@@ -231,39 +315,41 @@ const LoveCalculator = () => {
         }
 
         if (name1.includes(' ') || name2.includes(' ')) {
-            setIsCalculating(false);
             setResult(-1);
-            setSpecialMessage("Full name not allowed");
+            setSpecialMessage("Only first names please! ✨");
+            setTimeout(() => { setResult(null); }, 3000);
             return;
         }
+
+        setIsCalculating(true);
 
         setTimeout(() => {
             if ((a === 'yashika' && b === 'aditi') || (a === 'aditi' && b === 'yashika')) {
                 setResult(0);
                 setIsGlitching(true);
-                setSpecialMessage("Tch tch tch! bro! move on!");
+                setSpecialMessage("Tch tch tch! Bro... move on! 🛑");
             } else {
                 const score = loveCalculator(name1, name2);
                 setResult(score);
                 setSpecialMessage(null);
             }
             setIsCalculating(false);
-            // Save to global history secretly
             saveStat(name1, name2);
-        }, 1500);
+        }, 1800);
     };
 
-    const floatingHearts = Array.from({ length: 15 }).map((_, i) => ({
+    const floatingParticles = Array.from({ length: 20 }).map((_, i) => ({
         left: Math.random() * 100 + 'vw',
-        animationDuration: (Math.random() * 4 + 5) + 's',
+        animationDuration: (Math.random() * 5 + 6) + 's',
         animationDelay: Math.random() * 5 + 's',
-        size: Math.random() * 20 + 15 + 'px'
+        size: Math.random() * 30 + 10 + 'px',
+        opacity: Math.random() * 0.5 + 0.3
     }));
 
-    // Stats View
+    // Beautiful Stats View
     if (showStatsView) {
         return (
-            <div className="fancy-bg" style={{
+            <div className="super-cute-bg" style={{
                 position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
                 display: 'flex', flexDirection: 'column', alignItems: 'center',
                 padding: '1.5rem', fontFamily: "'Inter', sans-serif", zIndex: 100, overflowY: 'auto'
@@ -271,35 +357,47 @@ const LoveCalculator = () => {
                 <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', height: '100%' }}>
                     <header style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', flexShrink: 0 }}>
                         <button
-                            onClick={() => { setShowStatsView(false); setName1(''); setName2(''); }}
+                            onClick={() => { setShowStatsView(false); setName1(''); setName2(''); setResult(null); setIsGlitching(false); }}
                             style={{
-                                background: 'rgba(255,255,255,0.4)', border: 'none', cursor: 'pointer',
-                                color: '#fff', borderRadius: '50%', width: '45px', height: '45px',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(5px)',
-                                boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+                                background: 'white', border: 'none', cursor: 'pointer',
+                                color: '#ff6f91', borderRadius: '50%', width: '50px', height: '50px',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                boxShadow: '0 8px 15px rgba(255,182,185,0.4)', transition: 'transform 0.2s'
                             }}
+                            onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
+                            onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
                         >
-                            <ChevronLeft size={28} />
+                            <ChevronLeft size={32} />
                         </button>
-                        <h1 style={{ flex: 1, textAlign: 'center', color: '#fff', margin: 0, fontSize: '1.8rem', fontWeight: 900, textShadow: '0 4px 15px rgba(0,0,0,0.15)' }}>
-                            Global Searches
+                        <h1 style={{ flex: 1, textAlign: 'center', color: '#ff4b4b', margin: 0, fontSize: '2rem', fontWeight: 900, textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}>
+                            Secret Stats ✨
                         </h1>
-                        <div style={{ width: '45px' }}></div>
+                        <div style={{ width: '50px' }}></div>
                     </header>
 
-                    <main className="glass-card" style={{
-                        borderRadius: '30px', padding: '1.5rem', flex: 1, overflowY: 'auto'
+                    <main className="cute-glass" style={{
+                        borderRadius: '40px', padding: '2rem', flex: 1, overflowY: 'auto', border: '3px solid white'
                     }}>
                         {statsHistory.length === 0 ? (
-                            <p style={{ textAlign: 'center', color: '#666', marginTop: '2rem' }}>No searches recorded yet.</p>
+                            <div style={{ textAlign: 'center', color: '#ff9a9e', marginTop: '4rem', fontWeight: 800, fontSize: '1.2rem' }}>
+                                <Sparkles size={48} style={{ margin: '0 auto 1rem' }} />
+                                <p>No magic recorded yet!</p>
+                            </div>
                         ) : (
                             statsHistory.map((stat, i) => (
-                                <div key={i} className="stats-item">
-                                    <div style={{ fontWeight: 800, color: '#333', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        {stat.n1} <Heart size={14} color="#ff4b4b" fill="#ff4b4b" /> {stat.n2}
+                                <div key={i} style={{
+                                    background: 'white', marginBottom: '1rem', padding: '1.2rem',
+                                    borderRadius: '20px', display: 'flex', justifyContent: 'space-between',
+                                    alignItems: 'center', transition: 'transform 0.2s', boxShadow: '0 5px 15px rgba(255,182,185,0.2)'
+                                }}
+                                    onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'}
+                                    onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
+                                    <div style={{ fontWeight: 900, color: '#ff4b4b', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        {stat.n1} <Heart size={18} color="#ffb6b9" fill="#ffb6b9" /> {stat.n2}
                                     </div>
-                                    <div style={{ fontSize: '0.8rem', color: '#888', fontWeight: 600 }}>
-                                        {new Date(stat.time).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                    <div style={{ fontSize: '0.8rem', color: '#aaa', fontWeight: 700, textAlign: 'right' }}>
+                                        {new Date(stat.time).toLocaleString('en-US', { month: 'short', day: 'numeric' })}<br />
+                                        {new Date(stat.time).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit' })}
                                     </div>
                                 </div>
                             ))
@@ -311,133 +409,122 @@ const LoveCalculator = () => {
     }
 
     return (
-        <div className="fancy-bg" style={{
+        <div className="super-cute-bg" style={{
             position: 'absolute', top: 0, left: 0, right: 0, minHeight: '100vh',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             padding: '2rem 1rem', fontFamily: "'Inter', sans-serif", zIndex: 100, overflow: 'hidden'
         }}>
-
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'hidden' }}>
-                {floatingHearts.map((style, i) => (
-                    <Heart key={i} size={style.size} fill="rgba(255,255,255,0.6)" color="rgba(255,255,255,0.6)" style={{
-                        position: 'absolute', bottom: '-50px', left: style.left,
-                        animation: `floatHeart ${style.animationDuration} ease-in infinite ${style.animationDelay}`
-                    }} />
+                {floatingParticles.map((style, i) => (
+                    <div key={i} style={{
+                        position: 'absolute', bottom: '-100px', left: style.left, width: style.size, height: style.size,
+                        opacity: style.opacity, animation: `floatParticle ${style.animationDuration} ease-in infinite ${style.animationDelay}`
+                    }}>
+                        {i % 3 === 0 ? <Heart size="100%" color="#fff" fill="#fff" /> :
+                            i % 3 === 1 ? <Star size="100%" color="#fff" fill="#fff" /> :
+                                <Sparkles size="100%" color="#fff" />}
+                    </div>
                 ))}
             </div>
 
             <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '450px' }}>
-                <header style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
-                    <button
-                        onClick={() => navigate('/')}
-                        style={{
-                            background: 'rgba(255,255,255,0.4)', border: 'none', cursor: 'pointer',
-                            color: '#fff', borderRadius: '50%', width: '45px', height: '45px',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(5px)',
-                            boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
-                        }}
-                    >
-                        <ChevronLeft size={28} />
-                    </button>
-                    <h1 style={{ flex: 1, textAlign: 'center', color: '#fff', margin: 0, fontSize: '2rem', fontWeight: 900, textShadow: '0 4px 15px rgba(0,0,0,0.15)', letterSpacing: '-0.5px' }}>
-                        Love Calculator
-                    </h1>
-                    <div style={{ width: '45px' }}></div>
-                </header>
-
-                <main className="glass-card" style={{
-                    borderRadius: '30px', padding: '2.5rem 1.5rem', textAlign: 'center'
-                }}>
-                    <form onSubmit={handleCalculate} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <div style={{ position: 'relative', marginTop: '1rem' }}>
-                            <input
-                                type="text"
-                                className="custom-input"
-                                value={name1}
-                                onChange={(e) => setName1(e.target.value)}
-                                placeholder="  "
+                {!result && result !== 0 ? (
+                    <div style={{ animation: (result !== null || isCalculating) ? 'fadeOutForm 0.5s forwards' : 'none' }}>
+                        <header style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
+                            <button
+                                onClick={() => navigate('/')}
                                 style={{
-                                    width: '100%', padding: '1.2rem 1rem', borderRadius: '16px',
-                                    border: '2px solid rgba(255,255,255,0.8)', fontSize: '1.2rem',
-                                    outline: 'none', color: '#333', backgroundColor: 'rgba(255,255,255,0.8)',
-                                    transition: 'all 0.3s ease', boxSizing: 'border-box', textAlign: 'center', fontWeight: 'bold'
+                                    background: 'white', border: 'none', cursor: 'pointer',
+                                    color: '#ff6f91', borderRadius: '50%', width: '50px', height: '50px',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    boxShadow: '0 8px 15px rgba(255,182,185,0.4)', transition: 'transform 0.2s'
                                 }}
-                                required
-                            />
-                            <span style={{
-                                position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.9)', borderRadius: '10px',
-                                padding: '2px 10px', fontSize: '0.8rem', fontWeight: 800, color: '#ff4b4b', textTransform: 'uppercase', letterSpacing: '1px'
-                            }}>
-                                Your Name
-                            </span>
+                            >
+                                <ChevronLeft size={32} />
+                            </button>
+                            <h1 style={{ flex: 1, textAlign: 'center', color: 'white', margin: 0, fontSize: '2.2rem', fontWeight: 900, textShadow: '0 4px 15px rgba(255,154,158,0.8)', letterSpacing: '-0.5px' }}>
+                                Love Test 💖
+                            </h1>
+                            <div style={{ width: '50px' }}></div>
+                        </header>
+
+                        <main className="cute-glass" style={{
+                            padding: '3rem 2rem', textAlign: 'center'
+                        }}>
+                            <form onSubmit={handleCalculate} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                                <div style={{ position: 'relative' }}>
+                                    <div className="input-badge">Your Name</div>
+                                    <input
+                                        type="text"
+                                        className="cute-input"
+                                        value={name1}
+                                        onChange={(e) => setName1(e.target.value)}
+                                        placeholder="E.g. Romeo"
+                                        required
+                                    />
+                                </div>
+
+                                <div style={{ position: 'relative' }}>
+                                    <div className="input-badge">Crush's Name</div>
+                                    <input
+                                        type="text"
+                                        className="cute-input"
+                                        value={name2}
+                                        onChange={(e) => setName2(e.target.value)}
+                                        placeholder="E.g. Juliet"
+                                        required
+                                    />
+                                </div>
+
+                                {result === -1 && (
+                                    <div style={{ color: '#ff4b4b', fontWeight: 800, animation: 'popIn 0.3s' }}>{specialMessage}</div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={isCalculating}
+                                    className="cute-btn"
+                                    style={{ background: isCalculating ? '#fff' : '' }}
+                                >
+                                    {isCalculating ? (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                            <Heart className="broken-heart-effect" size={24} fill="#ff9a9e" color="#ff9a9e" />
+                                            Reading the stars...
+                                        </div>
+                                    ) : (
+                                        <>Calculate Magic <Sparkles size={24} /></>
+                                    )}
+                                </button>
+                            </form>
+                        </main>
+                    </div>
+                ) : (
+                    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                        <div className={`big-result-heart ${isGlitching ? 'broken-heart-effect' : ''}`}>
+                            <svg viewBox="0 0 24 24" fill={isGlitching ? "#333" : "#ff4b4b"} xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            </svg>
+                            <span className="result-text">{isGlitching ? glitchText : `${result}%`}</span>
                         </div>
 
-                        <div style={{ position: 'relative' }}>
-                            <input
-                                type="text"
-                                className="custom-input"
-                                value={name2}
-                                onChange={(e) => setName2(e.target.value)}
-                                placeholder="  "
-                                style={{
-                                    width: '100%', padding: '1.2rem 1rem', borderRadius: '16px',
-                                    border: '2px solid rgba(255,255,255,0.8)', fontSize: '1.2rem',
-                                    outline: 'none', color: '#333', backgroundColor: 'rgba(255,255,255,0.8)',
-                                    transition: 'all 0.3s ease', boxSizing: 'border-box', textAlign: 'center', fontWeight: 'bold'
-                                }}
-                                required
-                            />
-                            <span style={{
-                                position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.9)', borderRadius: '10px',
-                                padding: '2px 10px', fontSize: '0.8rem', fontWeight: 800, color: '#ff4b4b', textTransform: 'uppercase', letterSpacing: '1px'
-                            }}>
-                                Crush's Name
-                            </span>
+                        <div className="cute-message">
+                            <Sparkles size={24} color="#ffd700" fill="#ffd700" />
+                            {specialMessage ? specialMessage :
+                                result > 80 ? "Matches made in heaven!" :
+                                    result > 60 ? "There is a deep spark!" :
+                                        result > 40 ? "Maybe with some effort?" :
+                                            "Friendzone forever :("}
+                            <Sparkles size={24} color="#ffd700" fill="#ffd700" />
                         </div>
 
                         <button
-                            type="submit"
-                            disabled={isCalculating}
-                            style={{
-                                background: isCalculating ? '#ffb3c1' : 'linear-gradient(135deg, #ff4b4b 0%, #ff0f4b 100%)',
-                                color: 'white', border: 'none', padding: '1.2rem', borderRadius: '16px',
-                                fontSize: '1.2rem', fontWeight: '900', cursor: isCalculating ? 'wait' : 'pointer',
-                                transition: 'all 0.3s ease', textTransform: 'uppercase',
-                                letterSpacing: '2px', boxShadow: isCalculating ? 'none' : '0 10px 20px rgba(255, 75, 75, 0.4)',
-                                transform: isCalculating ? 'scale(0.98)' : 'scale(1)'
-                            }}>
-                            {isCalculating ? 'Calculating...' : 'Calculate Love'}
+                            onClick={() => { setResult(null); setName1(''); setName2(''); setIsGlitching(false); }}
+                            className="cute-btn"
+                            style={{ marginTop: '3rem', width: 'auto', padding: '1rem 2rem', fontSize: '1.1rem' }}>
+                            Test Another Love 💖
                         </button>
-                    </form>
-
-                    {result !== null && !isCalculating && (
-                        <div className={isGlitching ? "glitching-container" : ""} style={{
-                            marginTop: '3.5rem', animation: isGlitching ? 'none' : 'slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
-                        }}>
-                            <p style={{ fontSize: '0.9rem', color: isGlitching ? '#000' : '#666', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem', fontWeight: 800 }}>Compatibility</p>
-
-                            {result !== -1 && (
-                                <div className={isGlitching ? "glitching-text" : ""} style={{
-                                    fontSize: '6rem', fontWeight: '900',
-                                    background: 'linear-gradient(135deg, #ff0f4b, #ff758c)',
-                                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                                    lineHeight: 1, filter: 'drop-shadow(0 4px 15px rgba(255, 75, 75, 0.3))'
-                                }}>
-                                    {isGlitching ? glitchText : `${result}%`}
-                                </div>
-                            )}
-                            <p className={isGlitching ? "glitching-text" : ""} style={{
-                                marginTop: '1rem', fontSize: '1.3rem', color: '#ff0f4b', fontWeight: '900'
-                            }}>
-                                {specialMessage ? specialMessage :
-                                    result > 80 ? "Matches made in heaven ✨" :
-                                        result > 60 ? "There is a spark! 💖" :
-                                            result > 40 ? "Maybe some effort? 🤔" :
-                                                "Friendzone forever 😬"}
-                            </p>
-                        </div>
-                    )}
-                </main>
+                    </div>
+                )}
             </div>
         </div>
     );
